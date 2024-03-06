@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+:root {
+  height : 100%;
+}
+
+/* Hide those pesky "secured by clerk" tags */
+.cl-internal-b3fm6y,
+.cl-userButtonPopoverFooter,
+.cl-internal-n73svt {
+  display: none !important;
+}
+
+
+@layer base {
+  :root {
+    --background: 274,8%,97%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 241 80% 67%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 85.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+      --background: 240 10% 3.9%;
+      --foreground: 0 0% 98%;
+
+      --card: 240 10% 3.9%;
+      --card-foreground: 0 0% 98%;
+
+      --popover: 240 10% 3.9%;
+      --popover-foreground: 0 0% 98%;
+
+      --primary: 0 0% 98%;
+      --primary-foreground: 240 5.9% 10%;
+
+      --secondary: 241 80% 67%;
+      --secondary-foreground: 0 0% 98%;
+
+      --muted: 240 3.7% 15.9%;
+      --muted-foreground: 240 5% 64.9%;
+
+      --accent: 240 3.7% 15.9%;
+      --accent-foreground: 0 0% 98%;
+
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 0% 98%;
+
+      --border: 240 3.7% 15.9%;
+      --input: 240 3.7% 15.9%;
+      --ring: 240 4.9% 83.9%;
+    }
+  }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground min-h-full;
+  }
+
+}
+
+ul {
+  @apply border-l border-r backdrop-blur;
+}
+
+li {
+  @apply p-4 flex gap-2;
+}
+
+li > div {
+  @apply flex flex-col;
+}
+
+li > div > div {
+  @apply flex gap-1;
+}
+
+li .name {
+  @apply font-bold;
+}
+
+li .username {
+  @apply text-slate-500;
+}
+
+li .time {
+  @apply text-slate-600;
+}
+
+.composer {
+  @apply border;
+}
+
+.composer > div:first-child {
+  @apply flex p-4 gap-2;
+}
+
+.composer form {
+  @apply flex gap-2 flex-grow;
+}
+
+input[type="text"] {
+  @apply w-full py-2 px-4;
+}
+
+button,
+.composer button[type="submit"] {
+  @apply rounded bg-slate-200 py-2 px-4;
+}
+
+button[disabled],
+.composer button[type="submit"][disabled] {
+  @apply text-slate-400;
+}
+
+.composer .characterLimit {
+  @apply h-1 bg-gray-300;
+}
+
+.composer .characterLimit.characterLimitOver {
+  @apply bg-red-400;
+}
+
+.composer .error {
+  @apply text-red-400 py-2 px-4;
+}
+
+ul li img {
+  @apply w-10 h-10 rounded-full;
+}
+
+.cl-avatarBox {
+  @apply w-[2.5rem] h-[2.5rem];
+}
+
+.authorButton {
+  @apply min-w-[2.5rem] min-h-[2.5rem];
+}
+
+.profile {
+  @apply border-r border-l p-4 bg-gradient-to-b from-slate-300 to-white;
+}
+
+.profile > div {
+  @apply flex gap-1;
+}
+
+.profile h1 {
+  @apply font-bold text-2xl;
+}
+
+.profile h2 {
+  @apply text-slate-500;
+}
+
+.profile img {
+  @apply w-20 h-20 rounded-full border-2 border-white;
+}
+
