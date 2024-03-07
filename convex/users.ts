@@ -8,6 +8,7 @@ import {
   import { Doc, Id } from "./_generated/dataModel";
   import { UserJSON } from "@clerk/backend";
   
+
   /** These three functions work together to create the currentUser constant.
       The current user, containing user preferences and Clerk user info. */
   export const currentUser = query((ctx: QueryCtx) => mustGetCurrentUser(ctx));
@@ -19,6 +20,7 @@ import {
     return userRecord;
   }
 
+  //Return the user record for the current Clerk user, or null if not found.
   async function getCurrentUser(ctx: QueryCtx): Promise<Doc<"users"> | null> {
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
@@ -26,8 +28,11 @@ import {
     }
     return await userQuery(ctx, identity.subject);
   }
+
+  // ----------------------------------------------------------------------------------
   
   
+  // Get the username given an identity object
   function getUserName(identity: any) {
     if (identity.nickname){
       return identity.nickname;
@@ -55,9 +60,9 @@ import {
 
 
 
-//ONLY USED BY THE HOOK ------------------------------------------------------------
+// Helper Functions  ------------------------------------------------------------
 
-  /** Get user by Clerk use id (AKA "subject" on auth)  */
+  /** Get User by Clerk id (AKA "subject" on auth)  */
   export const getUser = internalQuery({
     args: { subject: v.string() },
     async handler(ctx, args) {

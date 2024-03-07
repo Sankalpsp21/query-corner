@@ -1,17 +1,31 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-// This is the schema for the Convex database. Currently, It is just a simple table with the user's name, username, picture URL, and Clerk user JSON.
-
 export default defineSchema({
   users: defineTable({
     name: v.string(),
     username: v.string(),
     pictureUrl: v.string(),
-    
-    // this is UserJSON from @clerk/backend. It's basically all the data that clerk provides about a user. See https://clerk.com/docs/integrations/webhooks/overview#payload-structure
-    clerkUser: v.any(),
+    clerkUser: v.any(),  // This is UserJSON from @clerk/backend. It's basically all the data that clerk provides about a user. 
+                        // See https://clerk.com/docs/integrations/webhooks/overview#payload-structure
   })
-  .index("by_userName", ["username"])
-  .index("by_clerk_id", ["clerkUser.id"]),
+    .index("by_userName", ["username"])
+    .index("by_clerk_id", ["clerkUser.id"]),
+  
+  posts: defineTable({
+    // authorId: v.id("users"),                //A reference to the author of the post
+    title: v.string(),
+    description: v.string(),    
+    prompt: v.string(),
+    likes: v.number(),
+    tags: v.optional(v.array(v.string())),  //An optional array of strings representing tags
+    platform: v.optional(v.string()),       //An optional string representing the platform the post is from
+    embedding: v.array(v.float64()),        //An array of floats representing the embedding of the post
+  })
+    // .index("authorId", ["authorId"])
+    .vectorIndex("by_embedding", {
+      vectorField: "embedding",
+      dimensions: 1536,
+      filterFields: ["tags", "platform"],
+    }),
 });
