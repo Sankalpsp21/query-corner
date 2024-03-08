@@ -80,11 +80,22 @@ import {
 
       // If the user doesn't exist, create it.
       if (userRecord === null) {
+        
+        //Create a var name that is either the first and last name, whichever is not null, or if they're both null, the username
+        let name = clerkUser.first_name;
+        if (clerkUser.last_name) {
+          name = name + " " + clerkUser.last_name;
+        } else if (clerkUser.username) {
+          name = clerkUser.username;
+        } else {
+          name = clerkUser.email_addresses[0].email_address.split("@")[0];
+        }
+
         await ctx.db.insert("users", 
         { 
-          name: clerkUser.first_name + " " + clerkUser.last_name, 
+          name: name, 
           username: clerkUser.username ?? clerkUser.email_addresses[0].email_address.split("@")[0], 
-          pictureUrl: clerkUser.profile_image_url, 
+          pictureUrl: clerkUser.image_url, 
           clerkUser: clerkUser 
         });
 
@@ -96,6 +107,7 @@ import {
         }
   
         const username = getUserName(identity);
+
         // If the user exists, update it.
         await ctx.db.patch(userRecord._id, 
           { 
