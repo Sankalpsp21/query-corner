@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import {
   query,
   action,
+  mutation,
   internalMutation,
   internalQuery,
 } from "./_generated/server";
@@ -10,7 +11,7 @@ import { EXAMPLE_DATA } from "./constants";
 
 
 //For initially populating the posts table with the example data
-export const populate = action({
+  export const populate = action({
     args: {},
     handler: async (ctx) => {
 
@@ -18,9 +19,9 @@ export const populate = action({
         const embedding = await embed(doc);
         await ctx.runMutation(internal.posts.insertRow, {
         //   authorId: author._id,
+          title: doc.title,
           description: doc.description,
           prompt: doc.prompt,
-          title: doc.title,
           likes: 0,
           embedding: embedding,
         });
@@ -28,7 +29,7 @@ export const populate = action({
     },
   });
 
-  //Given a title, description, and prompt, compute the embedding of the text using the OpenAI API
+  // Helper function, given a title, description, and prompt, returns the embedding of the text using the OpenAI API
   export async function embed({ title, description, prompt }: { title: string; description: string; prompt: string }): Promise<number[]> {
     const key = process.env.OPENAI_KEY;
     if (!key) {
@@ -56,13 +57,15 @@ export const populate = action({
     return vector;
   }
 
-  //For adding a new post to the posts table
+  //Helper for adding a new post to the posts table
   export const insertRow = internalMutation({
     args: {
       description: v.string(),
       prompt: v.string(),
       title: v.string(),
       likes: v.number(),
+      tags: v.optional(v.array(v.string())),
+      platform: v.optional(v.string()),
       embedding: v.array(v.float64()),
     },
     handler: async (ctx, args) => {
@@ -84,4 +87,35 @@ export const populate = action({
         tags: doc.tags !== undefined ? doc.tags : null
      };
     });
+  });
+
+  //Function to add a post from the client 
+  // Generates a the embedding of the post and adds it to the posts table
+  export const addPosts = action({
+    args: {
+      title: v.string(),
+      description: v.string(),
+      prompt: v.string(),
+      tags: v.optional(v.array(v.string())),
+      platform: v.optional(v.string()),    
+    },
+    handler: async (ctx, args) => {
+
+      const embedding = await embed({ 
+        title: args.title, 
+        description: args.description, 
+        prompt: args.prompt 
+      });
+
+      await ctx.runMutation(internal.posts.insertRow, {
+      //   authorId: author._id,
+        title: args.title,
+        description: args.description,
+        prompt: args.prompt,
+        likes: 0,
+        tags: args.tags,
+        platform: args.platform,
+        embedding: embedding,
+      });
+    },
   });
