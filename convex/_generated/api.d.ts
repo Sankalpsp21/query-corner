@@ -17,6 +17,7 @@ import type {
 import type * as constants from "../constants.js";
 import type * as http from "../http.js";
 import type * as posts from "../posts.js";
+import type * as search from "../search.js";
 import type * as users from "../users.js";
 
 /**
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   constants: typeof constants;
   http: typeof http;
   posts: typeof posts;
+  search: typeof search;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

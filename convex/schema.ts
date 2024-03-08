@@ -13,7 +13,7 @@ export default defineSchema({
     .index("by_clerk_id", ["clerkUser.id"]),
   
   posts: defineTable({
-    // authorId: v.id("users"),                //A reference to the author of the post
+    authorId: v.optional(v.id("users")),                //A reference to the author of the post
     title: v.string(),
     description: v.string(),    
     prompt: v.string(),
@@ -26,6 +26,6 @@ export default defineSchema({
     .vectorIndex("by_embedding", {
       vectorField: "embedding",
       dimensions: 1536,
-      filterFields: ["tags", "platform"],
+      filterFields: ["tags"],
     }),
 });
