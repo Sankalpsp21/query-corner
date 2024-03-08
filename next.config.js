@@ -10,6 +10,10 @@ const nextConfig = {
           protocol: "https",
           hostname: "images.clerk.dev",
         },
+        {
+          protocol: "https",
+          hostname: "images.unsplash.com",
+        }
       ],
     },
   };

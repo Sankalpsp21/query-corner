@@ -1,4 +1,5 @@
 import { v } from "convex/values";
+import { paginationOptsValidator } from "convex/server";
 import {
   query,
   action,
@@ -125,22 +126,19 @@ export type SearchResult = {
     });
 
 
-  //For getting the top 10 posts by likes
-  export const list = query(async (ctx) => {
-      const docs = await ctx.db.query("posts").order("desc").take(10);
-      return docs.map((doc) => {
-        return { 
-          _id: doc._id, 
-          title: doc.title, 
-          description: doc.description,
-          prompt: doc.prompt,
-          likes: doc.likes,
-          platform: doc.platform !== undefined ? doc.platform : null,
-          tags: doc.tags !== undefined ? doc.tags : null
-       };
-      });
-    });
+  //For getting the posts from the posts table
+  export const list = query({
+    args: { paginationOpts: paginationOptsValidator },
+    handler: async (ctx, args) => {
+        const docs = await ctx.db
+            .query("posts")
+            .order("desc")
+            .paginate(args.paginationOpts);
 
+        return docs;
+    }
+  });
+    
   //Helper function for getting the matching posts based on the query and tags
   export const fetchResults = internalQuery({
         args: {
