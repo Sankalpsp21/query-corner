@@ -1,6 +1,5 @@
 "use client";
 
-import Link from 'next/link'
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo"
 import { ModeToggle } from '@/components/ModeToggle'
@@ -48,17 +47,15 @@ const Nav = () => {
   }
 
   return (
-    <>
-    <StickyHeader className="px-4 py-2">
-    <div className="flex justify-between items-center">
-      <Logo />
-      <div className="flex gap-4 items-center">
-        <SignInAndSignUpButtons />
-        <ModeToggle />
-      </div>
-    </div>
-  </StickyHeader>       
-    </>
+      <StickyHeader className="px-4 py-2">
+        <div className="flex justify-between items-center">
+          <Logo />
+          <div className="flex gap-4 items-center">
+            <SignInAndSignUpButtons />
+            <ModeToggle />
+          </div>
+        </div>
+      </StickyHeader>       
   )
 }
 

@@ -1,8 +1,7 @@
 import { FakeParagraphs } from "@/components/helpers/FakeParagraphs";
 import { FakeWordList } from "@/components/helpers/FakeWordList";
 import { Paragraph } from "@/components/layout/paragraph";
-import { StickyFooter } from "@/components/layout/sticky-footer";
-import { StickyHeader } from "@/components/layout/sticky-header";
+import { Footer } from "@/components/layout/footer";
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
 
 // This layout extends `sticky-header-sidebar-sticky-footer`,
@@ -13,7 +12,6 @@ import { StickySidebar } from "@/components/layout/sticky-sidebar";
 export default function Layout() {
   return (
     <>
-      <StickyHeader className="p-2">Sticky header</StickyHeader>
       {/* For Footer to appear at the bottom, and the page
         to not have unnecessary scrollbar, the subtrahend
         inside calc() must be the same height as the header + footer */}
@@ -22,8 +20,8 @@ export default function Layout() {
           <div>Sticky sidebar</div>
           <FakeWordList count={60} length={[4, 15]} />
         </StickySidebar>
-        <main className="h-[calc(100vh-(5rem+2px))] p-4">
-          <div className="w-full h-full overflow-scroll">
+        <main className="h-full overflow-y-auto p-4">
+          <div className="h-full">
             <div className="p-4 bg-muted">
               <Paragraph>Main content</Paragraph>
               <FakeParagraphs words={80} count={4} />
@@ -31,7 +29,7 @@ export default function Layout() {
           </div>
         </main>
       </div>
-      <StickyFooter className="p-2">Sticky footer</StickyFooter>
+      <Footer>Footer below fold inside the main column</Footer>
     </>
   );
 }

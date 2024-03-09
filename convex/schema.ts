@@ -6,6 +6,8 @@ export default defineSchema({
     name: v.string(),
     username: v.string(),
     pictureUrl: v.string(),
+    searchHistory: v.optional(v.array(v.string())),  
+    savedPosts: v.optional(v.array(v.id("posts"))), // Array of post IDs representing saved posts
     clerkUser: v.any(),  // This is UserJSON from @clerk/backend. It's basically all the data that clerk provides about a user. 
                         // See https://clerk.com/docs/integrations/webhooks/overview#payload-structure
   })
