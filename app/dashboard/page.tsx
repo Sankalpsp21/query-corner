@@ -1,10 +1,7 @@
 "use client";
 
-import Logo from "@/components/Logo"
 import { Paragraph } from "@/components/layout/paragraph";
-import { Footer } from "@/components/layout/footer";
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
-import { Github } from 'lucide-react';
 
 export default function Dashboard() {
   return (
@@ -32,21 +29,6 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
-      <Footer className="bg-primary-foreground p-8 flex justify-between items-center">
-        <Logo />
-        {/* List the github */}
-        <a
-          href="https://github.com/Sankalpsp21/query-corner"
-          className="text-primary hover:text-secondary bg"
-          aria-label="GitHub"
-          title="View on GitHub"
-        >
-          {/* Give it a min height and with of 8 rem using tailwind */}
-          <Github size={42} />
-        </a>
-
-        Made with ❤️ by the Query Corner Team
-      </Footer>
     </main>
   );
 }

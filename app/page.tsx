@@ -87,8 +87,9 @@ export default function Home() {
               >
                 <h1 className="text-8xl font-bold text-center">
                   The Query Platform for 
-
-                    Everyone
+                </h1>
+                <h1 className="text-8xl font-bold text-center text-indigo-500">
+                  Everyone
                 </h1>
 
                 <div className="flex flex-row items-center justify-center mt-16">

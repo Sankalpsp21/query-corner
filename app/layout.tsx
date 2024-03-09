@@ -1,8 +1,10 @@
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider"
 import Nav from "@/components/Nav";
+import CustomFooter from "@/components/CustomFooter";
 import ConvexClientProvider from "@/components/providers/ConvexClientProvider";
 import CustomBackground from "@/components/CustomBackground";
 
@@ -38,6 +40,8 @@ export default function RootLayout({
             <CustomBackground>
               <Nav />
               {children}
+              <CustomFooter />  
+
             </CustomBackground>
           </ThemeProvider>
         </ConvexClientProvider>

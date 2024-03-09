@@ -10,9 +10,9 @@
     "dev:frontend": "next dev",
     "dev:backend": "convex dev",
     "predev": "convex dev --until-success && convex dashboard",
-    "build": "npx convex deploy --cmd 'npm run build'",
     "start": "next start",
-    "lint": "tsc && next lint"
+    "lint": "tsc && next lint",
+    "build": "next build"
   },
   "dependencies": {
     "@clerk/backend": "^0.37.3",
