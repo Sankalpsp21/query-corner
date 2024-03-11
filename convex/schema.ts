@@ -7,8 +7,6 @@ export default defineSchema({
     username: v.string(),
     pictureUrl: v.string(),
     searchHistory: v.optional(v.array(v.string())),  
-    savedPosts: v.optional(v.array(v.id("posts"))),
-    likedPosts: v.optional(v.array(v.id("posts"))), 
     // This is UserJSON from @clerk/backend. It's basically all the data that clerk provides about a user. 
     // See https://clerk.com/docs/integrations/webhooks/overview#payload-structure
     clerkUser: v.any(),  
@@ -32,4 +30,18 @@ export default defineSchema({
       dimensions: 1536,
       filterFields: ["tags"],
     }),
+  
+    userLikes: defineTable({
+      userId: v.id("users"),
+      postId: v.id("posts"),
+    })
+      .index("by_user_id", ["userId"])
+      .index("by_post_id", ["postId"]),
+    
+    userSaved: defineTable({
+      userId: v.id("users"),
+      postId: v.id("posts"),
+    })
+      .index("by_user_id", ["userId"])
+      .index("by_post_id", ["postId"]),
 });

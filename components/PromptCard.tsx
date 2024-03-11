@@ -29,6 +29,16 @@ const PromptCard = (props: {
         {props.prompt.title}
       </h2>
 
+      {props.prompt.tags?.map((tag) => {
+        return (
+          <div className="flex flex-row gap-2">
+            <Badge key={tag}>
+              {tag}
+            </Badge>
+          </div>
+        );
+      })}
+      
       <p className="text-s text-ellipsis overflow-hidden line-clamp-3 mb-2">
         {props.prompt.description}
       </p>
@@ -44,15 +54,6 @@ const PromptCard = (props: {
           </div>
       </Card>
 
-      {props.prompt.tags?.map((tag) => {
-        return (
-          <div className="flex flex-row gap-2">
-            <Badge key={tag}>
-              {tag}
-            </Badge>
-          </div>
-        );
-      })}
 
       <div className="flex items-center gap-2 mt-2">
         {/* not liked? */}
