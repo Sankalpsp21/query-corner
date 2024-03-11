@@ -1,9 +1,17 @@
 "use client";
 
-import { Paragraph } from "@/components/layout/paragraph";
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
+import PromptCard from "@/components/PromptCard";
+import { api } from "@/convex/_generated/api";
+import { usePaginatedQuery } from "convex/react"; //As opposed to useQuery which doesn't support pagination
 
 export default function Dashboard() {
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.posts.list,
+    {},
+    { initialNumItems: 5 },
+  );
+
   return (
     <main>
       {/* For Footer to appear at the bottom, and the page
@@ -19,15 +27,24 @@ export default function Dashboard() {
           <div>Example link</div>
         </StickySidebar>
 
-        <main className="h-full overflow-y-auto p-4">
-          <div className="h-full">
-            <div className="p-4 bg-muted border">
-              <Paragraph>
-                Main content. This is where the cards and maybe the search bar w filter will go
-              </Paragraph>
-            </div>
+        <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
+          <div className="p-4 grid grid-cols-4 gap-4">
+            {results &&
+              results.map((p) => {
+                return (
+                  <PromptCard
+                    prompt={{
+                      ...p,
+                      authorId: p.authorId ? String(p.authorId) : null,
+                      tags: p.tags ? p.tags : null,
+                      platform: p.platform ? p.platform : null,
+                    }}
+                    key={p._id}
+                  ></PromptCard>
+                );
+            })}
           </div>
-        </main>
+        </div>
       </div>
     </main>
   );
