@@ -7,6 +7,15 @@ import {
   import { v } from "convex/values";
   import { Doc, Id } from "./_generated/dataModel";
   import { UserJSON } from "@clerk/backend";
+
+  export const getUserById = query({
+    args: {
+      id: v.id("users"),
+    },
+    async handler(ctx, { id }) {
+      return await ctx.db.get(id);
+    },
+  });
   
 
   /** These three functions work together to create the currentUser constant.
