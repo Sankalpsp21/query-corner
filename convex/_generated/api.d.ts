@@ -18,7 +18,9 @@ import type * as constants from "../constants.js";
 import type * as http from "../http.js";
 import type * as posts from "../posts.js";
 import type * as search from "../search.js";
+import type * as userLikes from "../userLikes.js";
 import type * as users from "../users.js";
+import type * as userSaves from "../userSaves.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -33,7 +35,9 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   posts: typeof posts;
   search: typeof search;
+  userLikes: typeof userLikes;
   users: typeof users;
+  userSaves: typeof userSaves;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

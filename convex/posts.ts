@@ -177,3 +177,27 @@ export type SearchResult = {
           await ctx.db.delete(args._id);
         },
       });
+
+      export const incrementLikes = internalMutation({
+        args: {
+          _id: v.id("posts"),
+        },
+        handler: async (ctx, args) => {
+          const post = await ctx.db.get(args._id);
+          if (post) {
+            await ctx.db.patch(args._id, { likes: post.likes + 1 });
+          }
+        },
+      });
+
+      export const decrementLikes = internalMutation({
+        args: {
+          _id: v.id("posts"),
+        },
+        handler: async (ctx, args) => {
+          const post = await ctx.db.get(args._id);
+          if (post) {
+            await ctx.db.patch(args._id, { likes: post.likes - 1 });
+          }
+        },
+      });
