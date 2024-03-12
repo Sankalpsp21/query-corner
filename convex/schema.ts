@@ -35,13 +35,11 @@ export default defineSchema({
       userId: v.id("users"),
       postId: v.id("posts"),
     })
-      .index("by_user_id", ["userId"])
-      .index("by_post_id", ["postId"]),
+      .index("by_user_post", ["userId", "postId"]),
     
     userSaved: defineTable({
       userId: v.id("users"),
       postId: v.id("posts"),
     })
-      .index("by_user_id", ["userId"])
-      .index("by_post_id", ["postId"]),
+      .index("by_user_post", ["userId", "postId"]),
 });

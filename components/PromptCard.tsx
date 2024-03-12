@@ -4,10 +4,11 @@ import { CopyIcon, HeartIcon, HeartFilledIcon, BookmarkIcon, BookmarkFilledIcon 
 import { Button } from "./ui/button";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
+import { Id } from "@/convex/_generated/dataModel";
 
 const PromptCard = (props: {
   prompt: {
-    _id: string;
+    _id: Id<"posts">;
     _creationTime: number;
     authorId: string | null;
     tags: string[] | null;
@@ -17,28 +18,32 @@ const PromptCard = (props: {
     prompt: string;
     likes: number;
     embedding: number[];
-  };
+  },
+  likeCallback: (postId: Id<"posts">) => void;
+  unlikeCallback: (postId: Id<"posts">) => void;
 }) => {
   //If the authorId is not null, get the user object, else set user as null
   const user =  props.prompt.authorId ? useQuery(api.users.get, { username: props.prompt.authorId }) : null;
 
+  //If null, post is not liked by the user, else it is liked
+  const liked = useQuery(api.userLikes.isLiked, { postId: props.prompt._id});
 
   return (
-    <Card className="p-4 bg-primary-foreground shadow hover:cursor-pointer">
+    <Card className="p-4 bg-primary-foreground shadow">
       <h2 className="text-xl font-medium line-clamp-1 mb-2 hover:underline hover:cursor-pointer">
         {props.prompt.title}
       </h2>
 
-      {props.prompt.tags?.map((tag) => {
-        return (
-          <div className="flex flex-row gap-2">
-            <Badge key={tag}>
-              {tag}
-            </Badge>
-          </div>
-        );
-      })}
-      
+      <div className="flex flex-row gap-2">
+        {props.prompt.tags?.map((tag) => {
+          return (
+              <Badge key={tag}>
+                {tag}
+              </Badge>
+          );
+        })}
+      </div>
+
       <p className="text-s text-ellipsis overflow-hidden line-clamp-3 mb-2">
         {props.prompt.description}
       </p>
@@ -56,14 +61,18 @@ const PromptCard = (props: {
 
 
       <div className="flex items-center gap-2 mt-2">
-        {/* not liked? */}
-        <div className="text-2xl flex">
-          <HeartIcon style={{minWidth: "1.3rem", minHeight: "1.3rem"}}/>
-        </div>
-        {/* liked? */}
-        <div className="text-2xl">
-          <HeartFilledIcon style={{minWidth: "1.3rem", minHeight: "1.3rem", color: "red"}}/>
-        </div>
+        {liked ? (
+          <HeartFilledIcon 
+            onClick={(e) => props.unlikeCallback(props.prompt._id)}
+            style={{minWidth: "1.3rem", minHeight: "1.3rem", color: "red"}}
+          />
+        ) : (
+          <HeartIcon 
+            onClick={(e) => props.likeCallback(props.prompt._id)}
+            style={{minWidth: "1.3rem", minHeight: "1.3rem"}}
+          />
+        )}
+
         {/* Not Saved? */}
         <div className="text-2xl">
           <BookmarkIcon style={{minWidth: "1.3rem", minHeight: "1.3rem"}}/>

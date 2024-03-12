@@ -3,7 +3,8 @@
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
 import PromptCard from "@/components/PromptCard";
 import { api } from "@/convex/_generated/api";
-import { usePaginatedQuery } from "convex/react"; //As opposed to useQuery which doesn't support pagination
+import { usePaginatedQuery, useMutation } from "convex/react"; //As opposed to useQuery which doesn't support pagination
+import { Id } from "@/convex/_generated/dataModel";
 
 export default function Dashboard() {
   const { results, status, loadMore } = usePaginatedQuery(
@@ -11,6 +12,17 @@ export default function Dashboard() {
     {},
     { initialNumItems: 5 },
   );
+
+  const likePost = useMutation(api.userLikes.like);
+  const unlikePost = useMutation(api.userLikes.unlike); 
+
+  function clickedLike(postId: Id<"posts">) {
+    likePost({ postId: postId });
+}
+
+function clickedUnlike(postId: Id<"posts">) {
+    unlikePost({ postId: postId });
+}
 
   return (
     <main>
@@ -39,6 +51,8 @@ export default function Dashboard() {
                       tags: p.tags ? p.tags : null,
                       platform: p.platform ? p.platform : null,
                     }}
+                    likeCallback={clickedLike}
+                    unlikeCallback={clickedUnlike}
                     key={p._id}
                   ></PromptCard>
                 );
