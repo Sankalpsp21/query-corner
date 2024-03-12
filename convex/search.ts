@@ -2,7 +2,7 @@
 
 import { action } from "./_generated/server";
 import { v } from "convex/values";
-import { SearchResult, embed } from "./posts";
+import { SearchResultVector, embed } from "./posts";
 import { internal } from "./_generated/api";
 
 
@@ -25,7 +25,7 @@ export const similarPosts = action({
         limit: 16,
       });
     }
-    const rows: SearchResult[] = await ctx.runQuery(
+    const rows: SearchResultVector[] = await ctx.runQuery(
       internal.posts.fetchResults,
       { results },
     );

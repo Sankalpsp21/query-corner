@@ -12,7 +12,7 @@ import { mustGetCurrentUser } from "./users";
 import { EXAMPLE_DATA } from "./constants";
 
 
-export type SearchResult = {
+export type SearchResultVector = {
     _id: string;
     _score: number;
     _authorId: string | null;
@@ -145,7 +145,7 @@ export type SearchResult = {
           results: v.array(v.object({ _id: v.id("posts"), _score: v.float64() })),
         },
         handler: async (ctx, args) => {
-          const out: SearchResult[] = [];
+          const out: SearchResultVector[] = [];
           for (const result of args.results) {
             const doc = await ctx.db.get(result._id);
             if (!doc) {
