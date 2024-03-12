@@ -5,6 +5,7 @@ import PromptCard from "@/components/PromptCard";
 import { api } from "@/convex/_generated/api";
 import { usePaginatedQuery, useMutation } from "convex/react"; //As opposed to useQuery which doesn't support pagination
 import { Id } from "@/convex/_generated/dataModel";
+import CreatePost from "@/components/CreatePost";
 
 export default function Dashboard() {
   const { results, status, loadMore } = usePaginatedQuery(
@@ -48,8 +49,9 @@ function clickedUnsave(postId: Id<"posts">) {
           <div>Example link</div>
           <div>Example link</div>
         </StickySidebar>
-
+        
         <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
+        <CreatePost />
           <div className="p-4 grid grid-cols-4 gap-4">
             {results &&
               results.map((p) => {
