@@ -10,12 +10,14 @@ import {
 import { internal } from "./_generated/api";
 import { mustGetCurrentUser } from "./users";
 import { EXAMPLE_DATA } from "./constants";
+import { Id } from "./_generated/dataModel";
 
 
 export type SearchResultVector = {
-    _id: string;
+    _id: Id<"posts">;
+    _creationTime: number;
     _score: number;
-    _authorId: string | null;
+    _authorId: Id<"users"> | null;
     title: string;
     description: string;
     prompt: string;
@@ -153,6 +155,7 @@ export type SearchResultVector = {
             }
             out.push({
               _id: doc._id,
+              _creationTime: doc._creationTime,
               _score: result._score,
               _authorId: doc.authorId !== undefined ? doc.authorId : null,
                 title: doc.title,
@@ -160,7 +163,7 @@ export type SearchResultVector = {
                 prompt: doc.prompt,
                 likes: doc.likes,
                 platform: doc.platform !== undefined ? doc.platform : null,
-                tags: doc.tags !== undefined ? doc.tags : null
+                tags: doc.tags !== undefined ? doc.tags : null,
             });
           }
           return out;

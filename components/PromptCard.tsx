@@ -9,15 +9,15 @@ import { Id } from "@/convex/_generated/dataModel";
 const PromptCard = (props: {
   prompt: {
     _id: Id<"posts">;
+    _score: number;
     _creationTime: number;
-    authorId: string | null;
+    authorId: Id<"users"> | null;
     tags: string[] | null;
     platform: string | null;
     title: string;
     description: string;
     prompt: string;
     likes: number;
-    embedding: number[];
   },
   likeCallback: (postId: Id<"posts">) => void;
   unlikeCallback: (postId: Id<"posts">) => void;
@@ -25,7 +25,7 @@ const PromptCard = (props: {
   unsaveCallback: (postId: Id<"posts">) => void;
 }) => {
   //If the authorId is not null, get the user object, else set user as null
-  const user =  props.prompt.authorId ? useQuery(api.users.get, { username: props.prompt.authorId }) : null;
+  const user =  props.prompt.authorId ? useQuery(api.users.getUserById, { id: props.prompt.authorId }) : null;
 
   //If null, post is not liked by the user, else it is liked
   const liked = useQuery(api.userLikes.isLiked, { postId: props.prompt._id});
@@ -33,9 +33,14 @@ const PromptCard = (props: {
 
   return (
     <Card className="p-4 bg-primary-foreground shadow">
-      <h2 className="text-xl font-medium line-clamp-1 mb-2 hover:underline hover:cursor-pointer">
-        {props.prompt.title}
-      </h2>
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-xl font-medium line-clamp-1 hover:underline hover:cursor-pointer">
+          {props.prompt.title}
+        </h2>
+        <p className="text-sm rounded-md py-1 px-2 bg-muted">
+          {(props.prompt._score * 100).toFixed(1)}%
+        </p>
+      </div>
 
       <div className="flex flex-row gap-2">
         {props.prompt.tags?.map((tag) => {
