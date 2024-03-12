@@ -21,12 +21,15 @@ const PromptCard = (props: {
   },
   likeCallback: (postId: Id<"posts">) => void;
   unlikeCallback: (postId: Id<"posts">) => void;
+  saveCallback: (postId: Id<"posts">) => void;
+  unsaveCallback: (postId: Id<"posts">) => void;
 }) => {
   //If the authorId is not null, get the user object, else set user as null
   const user =  props.prompt.authorId ? useQuery(api.users.get, { username: props.prompt.authorId }) : null;
 
   //If null, post is not liked by the user, else it is liked
   const liked = useQuery(api.userLikes.isLiked, { postId: props.prompt._id});
+  const saved = useQuery(api.userSaves.isSaved, { postId: props.prompt._id});
 
   return (
     <Card className="p-4 bg-primary-foreground shadow">
@@ -72,17 +75,17 @@ const PromptCard = (props: {
             style={{minWidth: "1.3rem", minHeight: "1.3rem"}}
           />
         )}
-
-        {/* Not Saved? */}
-        <div className="text-2xl">
-          <BookmarkIcon style={{minWidth: "1.3rem", minHeight: "1.3rem"}}/>
-        </div>
-        {/* Saved? */}
-        <div className="text-2xl">
-          <BookmarkFilledIcon style={{minWidth: "1.3rem", minHeight: "1.3rem", color: "purple"}}/>
-        </div>
-        <div className="text-2xl">
-        </div>
+        {saved ? (
+          <BookmarkFilledIcon 
+            onClick={(e) => props.unsaveCallback(props.prompt._id)}
+            style={{minWidth: "1.3rem", minHeight: "1.3rem", color: "purple"}}
+          />
+        ) : (
+          <BookmarkIcon 
+            onClick={(e) => props.saveCallback(props.prompt._id)}
+            style={{minWidth: "1.3rem", minHeight: "1.3rem"}}
+          />
+        )}
       </div>
 
 

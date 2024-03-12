@@ -15,13 +15,23 @@ export default function Dashboard() {
 
   const likePost = useMutation(api.userLikes.like);
   const unlikePost = useMutation(api.userLikes.unlike); 
+  const savePost = useMutation(api.userSaves.save);
+  const unsavePost = useMutation(api.userSaves.unsave);
 
-  function clickedLike(postId: Id<"posts">) {
+function clickedLike(postId: Id<"posts">) {
     likePost({ postId: postId });
 }
 
 function clickedUnlike(postId: Id<"posts">) {
     unlikePost({ postId: postId });
+}
+
+function clickedSave(postId: Id<"posts">) {
+    savePost({ postId: postId });
+}
+
+function clickedUnsave(postId: Id<"posts">) {
+    unsavePost({ postId: postId });
 }
 
   return (
@@ -53,6 +63,8 @@ function clickedUnlike(postId: Id<"posts">) {
                     }}
                     likeCallback={clickedLike}
                     unlikeCallback={clickedUnlike}
+                    saveCallback={clickedSave}
+                    unsaveCallback={clickedUnsave}
                     key={p._id}
                   ></PromptCard>
                 );

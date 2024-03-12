@@ -37,7 +37,7 @@ export default defineSchema({
     })
       .index("by_user_post", ["userId", "postId"]),
     
-    userSaved: defineTable({
+    userSaves: defineTable({
       userId: v.id("users"),
       postId: v.id("posts"),
     })
