@@ -1,9 +1,11 @@
 "use client";
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
 import SkeletonGrid from "@/components/SkeletonGrid"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function Dashboard() {
-
+  const { toast } = useToast()
   return (
     <main>
       {/* For Footer to appear at the bottom, and the page
@@ -20,6 +22,17 @@ export default function Dashboard() {
         </StickySidebar>
 
         <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
+        <Button
+          variant="outline"
+          onClick={() => {
+            toast({
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem with your request.",
+            })
+          }}
+        >
+          Show Toast
+        </Button>
             <SkeletonGrid />
         </div>
       </div>

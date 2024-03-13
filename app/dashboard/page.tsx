@@ -11,6 +11,7 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
 import { SearchResultVector } from "@/convex/posts";
 import SkeletonGrid from "@/components/SkeletonGrid";
+import { useToast } from "@/components/ui/use-toast";
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -45,7 +46,8 @@ export default function Dashboard() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<SearchResultVector[]>([]);
-  
+  const { toast } = useToast()
+
   //For initially loading the page
   useEffect(() => {
     search({query: ""}).then((res) => {
@@ -77,7 +79,6 @@ export default function Dashboard() {
     });
     
     setLoading(false);
-    setTags([])
   };
 
   const likePost = useMutation(api.userLikes.like);
@@ -101,6 +102,29 @@ export default function Dashboard() {
       unsavePost({ postId: postId });
   }
 
+  function copyText(promptText: string) {
+    // Copy prompt text to clipboard
+    navigator.clipboard.writeText(promptText);
+
+    // Construct the URL with the prompt text as a query parameter
+    const chatGPTUrl = `https://chat.openai.com/?prompt=${encodeURIComponent(promptText)}`;
+
+    // Show toast notification
+    toast({
+      title: "Prompt copied to clipboard",
+      description: (
+        <a
+          href={chatGPTUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline hover:text-accent"
+          >
+          Click here to paste the prompt into ChatGPT.
+        </a>
+      )
+    });
+  }
+
 
   return (
     <main>
@@ -117,7 +141,7 @@ export default function Dashboard() {
         <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
 
           {/* Search Bar */}
-          <div style={{ minHeight:"5rem" }}>
+          <div style={{ minHeight:"7rem" }}>
             <div className="min-w-3xl max-w-3xl mx-auto pt-3 rounded-2xl px-8 shadow-input bg-primary-foreground border" >
               <Form {...form}>
                 <form 
@@ -193,6 +217,7 @@ export default function Dashboard() {
                       unlikeCallback={clickedUnlike}
                       saveCallback={clickedSave}
                       unsaveCallback={clickedUnsave}
+                      copyCallback={copyText}
                       key={p._id}
                     ></PromptCard>
                   );

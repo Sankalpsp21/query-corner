@@ -37,7 +37,24 @@ export default function Home() {
       transition: {
         duration: 0.8,
         ease: "easeInOut",
-        delay: 1,
+        delay: 0.7,
+      },
+      scale: 1,
+    },
+  };
+
+  const infiniteCards = {
+    hidden: {
+      opacity: 0,
+      y: 40,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut",
+        delay: 1.5,
       },
       scale: 1,
     },
@@ -154,12 +171,20 @@ export default function Home() {
 
             </div>
       </div>
+
+      <motion.div
+        variants={infiniteCards}
+        initial="hidden"
+        animate="visible"
+      >
         <InfiniteMovingCards
           className="mt-16"
           items={examples}
           direction="right"
           speed="slow"
         />
+      </motion.div>
+
     </main>
   );
 }

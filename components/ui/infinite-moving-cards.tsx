@@ -167,20 +167,20 @@ export const InfiniteMovingCards = ({
             <div className="flex items-center gap-2 mt-2">
               {item.liked ? (
                 <HeartFilledIcon 
-                  style={{minWidth: "1.3rem", minHeight: "1.3rem", color: "red"}}
+                  style={{minWidth: "1.5rem", minHeight: "1.5rem", color: "red"}}
                 />
               ) : (
                 <HeartIcon 
-                  style={{minWidth: "1.3rem", minHeight: "1.3rem"}}
+                  style={{minWidth: "1.5rem", minHeight: "1.5rem"}}
                 />
               )}
               {item.saved ? (
                 <BookmarkFilledIcon 
-                  style={{minWidth: "1.3rem", minHeight: "1.3rem", color: "purple"}}
+                  style={{minWidth: "1.5rem", minHeight: "1.5rem", color: "purple"}}
                 />
               ) : (
                 <BookmarkIcon 
-                  style={{minWidth: "1.3rem", minHeight: "1.3rem"}}
+                  style={{minWidth: "1.5rem", minHeight: "1.5rem"}}
                 />
               )}
             </div>
