@@ -37,6 +37,7 @@ export interface SearchParams {
   results: idResult[];
   tags?: string[]; 
 }
+import CreatePost from "@/components/CreatePost";
 
 export default function Dashboard() {
   const search = useAction(api.search.similarPosts); 

@@ -103,8 +103,8 @@ export interface idResult {
         handler: async (ctx, args) => {
             
             //Generate the embedding
-            const embedding = await embed(args.title + args.description + args.prompt);
-
+            const embedding = [0.01]
+            
             //Add the post to the posts table
             await ctx.runMutation(internal.posts.insertRow, {
                 title: args.title,
