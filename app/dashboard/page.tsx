@@ -132,6 +132,7 @@ export default function Dashboard() {
                         <FormControl>
                           <Input 
                             placeholder="Search for a prompt" {...field}
+                            className="hover:border-primary hover:cursor-pointer"
                           />
                         </FormControl>
                         <FormMessage />
@@ -149,6 +150,7 @@ export default function Dashboard() {
                             {...field}
                             placeholder="Enter a topic (optional)"
                             inputFieldPostion="top"
+                            className="hover:border-primary hover:cursor-pointer"
                             size="sm"
                             tags={tags}
                             setTags={(newTags) => {
