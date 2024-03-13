@@ -1,17 +1,13 @@
 "use client";
 
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
-import PromptCard from "@/components/PromptCard";
 import { api } from "@/convex/_generated/api";
-import { usePaginatedQuery, useMutation, useAction } from "convex/react"; //As opposed to useQuery which doesn't support pagination
-import { Id } from "@/convex/_generated/dataModel";
+import { useAction } from "convex/react"; //As opposed to useQuery which doesn't support pagination
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useState, useEffect } from "react";
-import { SearchResultVector } from "@/convex/posts";
-import SkeletonGrid from "@/components/SkeletonGrid";
-import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
+import { idResult } from "@/convex/posts";
+import SearchResults from "@/components/SearchResults"
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -24,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Tag, TagInput } from "@/components/ui/tag-input";
+import { useEffect } from "react"
 
 const searchFormSchema = z.object({
   query: z.string().min(0).max(300),
@@ -36,25 +33,18 @@ const searchFormSchema = z.object({
   )
 })
 
-interface SearchParams {
-  query: string;
+export interface SearchParams {
+  results: idResult[];
   tags?: string[]; 
 }
 
 export default function Dashboard() {
-  const search = useAction(api.search.similarPosts);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState<SearchResultVector[]>([]);
-  const { toast } = useToast()
+  const search = useAction(api.search.similarPosts); 
 
-  //For initially loading the page
-  useEffect(() => {
-    search({query: ""}).then((res) => {
-      setPosts(res);
-      setLoading(false);
-    });
-  }, []);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [queryTags, setQueryTags] = useState<string[] | undefined>();
+  const [fetchedIds, setFetchedIds] = useState<idResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchParams>({results: []})
   
   const form = useForm<z.infer<typeof searchFormSchema>>({
     resolver: zodResolver(searchFormSchema)
@@ -62,69 +52,31 @@ export default function Dashboard() {
 
   const { setValue } = form;
 
-  const onSubmit = (values: z.infer<typeof searchFormSchema>) => {
-    setLoading(true);
-    const searchTerm = values.query
-    const tags = values.tags?.map(tag => tag?.text)
+  useEffect(() => {
+    console.log(queryTags)
+  }, [queryTags]);
 
-    const searchParams: SearchParams = { query: searchTerm };
-    if (tags) {
-      searchParams['tags'] = tags;
-    }
 
-    console.log("Searching", searchParams)
+  useEffect(() => {
+      const searchParams: SearchParams = { results: fetchedIds };
+      if (queryTags) {
+        searchParams.tags = queryTags;
+      }
+      setSearchResults(searchParams);
+      console.log("Created search Params", searchParams);
+  }, [fetchedIds]);
 
-    search(searchParams).then((res) => {
-      setPosts(res);
-    });
-    
-    setLoading(false);
+  
+  const onSubmit = async (values: z.infer<typeof searchFormSchema>) => {
+    console.log(values);
+  
+    const searchTerm = values.query;
+    setQueryTags(values.tags?.map(tag => tag.text));
+  
+    // Do vector search and get matching post ids and scores
+    const res = await search({ query: searchTerm });
+    setFetchedIds(res);
   };
-
-  const likePost = useMutation(api.userLikes.like);
-  const unlikePost = useMutation(api.userLikes.unlike); 
-  const savePost = useMutation(api.userSaves.save);
-  const unsavePost = useMutation(api.userSaves.unsave);
-
-  function clickedLike(postId: Id<"posts">) {
-      likePost({ postId: postId });
-  }
-
-  function clickedUnlike(postId: Id<"posts">) {
-      unlikePost({ postId: postId });
-  }
-
-  function clickedSave(postId: Id<"posts">) {
-      savePost({ postId: postId });
-  }
-
-  function clickedUnsave(postId: Id<"posts">) {
-      unsavePost({ postId: postId });
-  }
-
-  function copyText(promptText: string) {
-    // Copy prompt text to clipboard
-    navigator.clipboard.writeText(promptText);
-
-    // Construct the URL with the prompt text as a query parameter
-    const chatGPTUrl = `https://chat.openai.com/?prompt=${encodeURIComponent(promptText)}`;
-
-    // Show toast notification
-    toast({
-      title: "Prompt copied to clipboard",
-      description: (
-        <a
-          href={chatGPTUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline hover:text-accent"
-          >
-          Click here to paste the prompt into ChatGPT.
-        </a>
-      )
-    });
-  }
-
 
   return (
     <main>
@@ -192,38 +144,11 @@ export default function Dashboard() {
                 </form>
               </Form>
             </div>
-
           </div>
 
-          {loading && (
-            <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
-              <SkeletonGrid />
-            </div>
-          )}
-
-          {!loading && (
-            <div className="p-4 grid grid-cols-4 gap-4 overflow-y-auto">
-              {posts &&
-                posts.map((p) => {
-                  return (
-                    <PromptCard
-                      prompt={{
-                        ...p,
-                        authorId: p._authorId ?? null,
-                        tags: p.tags ?? null,
-                        platform: p.platform ?? null,
-                      }}
-                      likeCallback={clickedLike}
-                      unlikeCallback={clickedUnlike}
-                      saveCallback={clickedSave}
-                      unsaveCallback={clickedUnsave}
-                      copyCallback={copyText}
-                      key={p._id}
-                    ></PromptCard>
-                  );
-              })}
-            </div>
-          )}
+          <SearchResults
+            searchParams={searchResults}
+          />
         </div>
       </div>
     </main>
