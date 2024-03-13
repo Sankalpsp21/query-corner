@@ -13,11 +13,11 @@ export const similarPosts = action({
     const embedding = await embed(args.query);
     const tags = args.tags;
     let results;
-    if (tags !== undefined) {
+    if (tags && tags.length != 0) {
       results = await ctx.vectorSearch("posts", "by_embedding", {
         vector: embedding,
         limit: 16,
-        filter: (q) => q.eq("tags", tags)
+        filter: (q) => q.eq("tags", tags) // Not sure how to structure the query here
       });
     } else {
       results = await ctx.vectorSearch("posts", "by_embedding", {
