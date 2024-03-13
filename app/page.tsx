@@ -6,9 +6,12 @@ import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 import { SignInButton } from "@clerk/clerk-react";
-import Link from "next/link";
+import { useTheme } from "next-themes"
+import Image from "next/image";
 
 export default function Home() {
+
+  const theme = useTheme();
 
   //Landing animation inspiration from https://github.com/Nyumat/TalkToBeavs/blob/deploy/frontend/src/components/landing/Hero.jsx
   const landingText = {
@@ -135,7 +138,7 @@ export default function Home() {
   return (
     <main>
       <div className="container flex flex-col gap-8">
-            <div className="flex flex-col items-center justify-center h-[50vh] mt-10">
+            <div className="flex flex-col items-center justify-center h-[70vh] mt-10">
               <motion.div
                 variants={landingText}
                 initial="hidden"
@@ -162,7 +165,7 @@ export default function Home() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <BackgroundGradient className="p-0.1 bg-transparent " containerClassName="mt-16 transform transition-transform duration-200 hover:scale-110">
+                  <BackgroundGradient className="p-0.1 bg-transparent " containerClassName="mt-24 transform transition-transform duration-200 hover:scale-110">
                     <SignInButton mode="modal" afterSignInUrl='/dashboard'> 
                         <Button size="lg" variant="hover" className="foreground text-xl font-bold text-center">
                             Get Started for Free
@@ -174,15 +177,49 @@ export default function Home() {
             </div>
       </div>
 
-      {/* <MacbookScroll
-        title={
-          <span>
-            This Macbook is built with Tailwindcss. <br /> No kidding.
-          </span>
-        }
-        src={`/dashboard.png`}
-        showGradient={true}
-      /> */}
+      <div className="flex flex-row items-center justify-center mt-16 bg-primary-foreground">
+          <h3 className="text-5xl text-center font-semibold">
+             Share your prompts with the community
+          </h3>
+      </div>
+
+      <div className="flex flex-row items-start justify-between gap-5 mt-56 mx-20 bg-primary-foreground pl-16 pr-8 py-56 rounded-2xl">
+        <Image
+            src= { theme.theme === "dark" || theme.theme === "system" || !theme.theme ? "/dashboard-dark.png" : "/dashboard-light.png"}
+            alt="dashboard"
+            className="rounded-md inset-0 border shadow-2xl"
+            height={800}
+            width={1000}
+          />
+          <div className="flex flex-col justify-start gap-5 mt-16">
+            <h3 className="text-5xl text-left font-semibold flex gap-3">
+              <p className="text-indigo-500">Ditch</p> Prompt Engineering
+            </h3>
+            <p className="text-2xl font-semibold">
+              Get custom tailored prompts with 
+            </p>
+
+          </div>
+      </div>
+      <div className="flex flex-row items-start justify-evenly gap-4 bg-primary-foreground px-16 py-16 mx-20">
+        <div className="flex flex-col justify-start gap-5 mt-16">
+          <h3 className="text-5xl text-left font-semibold">
+            Ditch Prompt Engineering
+          </h3>
+          <p className="text-2xl font-semibold">
+            Get custom tailored prompts with 
+          </p>
+
+        </div>
+        <Image
+              src= { theme.theme === "dark" || theme.theme === "system" || !theme.theme ? "/prompt-dark.png" : "/prompt-light.png"}
+              alt="aceternity logo"
+              className="rounded-md inset-0 border shadow-lg"
+              height={600}
+              width={400}
+          />
+      </div>
+
 
       <motion.div
         variants={infiniteCards}
@@ -190,7 +227,7 @@ export default function Home() {
         animate="visible"
       >
         <InfiniteMovingCards
-          className="mt-16"
+          className="mt-96"
           items={examples}
           direction="right"
           speed="slow"

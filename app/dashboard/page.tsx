@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { idResult } from "@/convex/posts";
+import { PersonIcon, BookmarkFilledIcon, CounterClockwiseClockIcon } from "@radix-ui/react-icons"
 import SearchResults from "@/components/SearchResults"
 import CreatePost from "@/components/CreatePost";
 
@@ -83,12 +84,46 @@ export default function Dashboard() {
     <main>
       <div className="grid grid-cols-[240px_minmax(0,1fr)]">
 
-        <StickySidebar className="top-[calc(2.5rem+1px)] h-[calc(100vh-(5rem+2px))] m-1 p-3 rounded-md bg-primary-foreground border flex flex-col items-start">
-          <div>Sticky sidebar</div>
-          <div>Example link</div>
-          <div>Example link</div>
-          <div>Example link</div>
-          <div>Example link</div>
+        <StickySidebar className="top-[calc(2.5rem+1px)] h-[calc(100vh-(5rem+2px))] p-3 rounded-md bg-primary-foreground border">
+          <div className="flex flex-col gap-2">
+            <Button
+              variant="outline"
+              style={{minWidth: "100%"}}
+            >
+              <span className="flex justify-between gap-1 items-center">
+                <PersonIcon 
+                  style={{minWidth: "1.5rem", minHeight: "1.5rem", color: "grey",}}
+                />
+                My Prompts
+
+              </span>
+            </Button>
+            <Button
+              variant="outline"
+              style={{minWidth: "100%"}}
+            >
+              <span className="flex justify-between gap-1 items-center">
+                <BookmarkFilledIcon 
+                  style={{minWidth: "1.5rem", minHeight: "1.5rem", color: "grey",}}
+                />
+                Saved Prompts
+
+              </span>
+            </Button>
+            <Button
+              variant="outline"
+              style={{minWidth: "100%"}}
+            >
+              <span className="flex justify-between gap-1 items-center">
+                <CounterClockwiseClockIcon 
+                  style={{minWidth: "1.5rem", minHeight: "1.5rem", color: "grey",}}
+                />
+                Search History
+
+              </span>
+            </Button>
+
+          </div>
         </StickySidebar>
 
         <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
