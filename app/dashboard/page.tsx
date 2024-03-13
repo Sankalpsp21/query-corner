@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { idResult } from "@/convex/posts";
 import SearchResults from "@/components/SearchResults"
+import CreatePost from "@/components/CreatePost";
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -37,7 +38,6 @@ export interface SearchParams {
   results: idResult[];
   tags?: string[]; 
 }
-import CreatePost from "@/components/CreatePost";
 
 export default function Dashboard() {
   const search = useAction(api.search.similarPosts); 
@@ -94,7 +94,8 @@ export default function Dashboard() {
         <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
 
           {/* Search Bar */}
-          <div style={{ minHeight:"7rem" }}>
+          <div className="flex items-start" style={{ minHeight:"7rem" }}>
+            
             <div className="min-w-3xl max-w-3xl mx-auto pt-3 rounded-2xl px-8 shadow-input bg-primary-foreground border" >
               <Form {...form}>
                 <form 
@@ -145,6 +146,7 @@ export default function Dashboard() {
                 </form>
               </Form>
             </div>
+            <CreatePost/>
           </div>
 
           <SearchResults

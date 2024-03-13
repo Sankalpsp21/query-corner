@@ -1,51 +1,54 @@
-import React, { useState } from "react";
 import { CreateNewPostForm } from "./CreateNewPostForm";
 import { useAction } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { Tag } from "@/components/ui/tag-input";
+import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog"
 
-interface PostData {
+export interface PostData {
     title: string;
     description: string;
     prompt: string;
-    tags: Tag[];
+    tags?: Tag[] | undefined;
 }
 
 const CreatePost = () => {
-    const [showModal, setShowModal] = useState(false);
-
     const addPostsAction = useAction(api.posts.addPosts);
 
     const handleCreatePost = async (postData: PostData) => {
         await addPostsAction({
             ...postData,
-            tags: postData.tags.map(tag => tag.text),
+            tags: postData.tags?.map(tag => tag.text),
         });
-        setShowModal(false);
     };
 
-    const handleClick = () => {
-        setShowModal(!showModal);
-    }
-
     return (
-        <div>
-            <button
-                className="border border-black p-4 rounded-md text-white bg-gray-800 hover:bg-blue-600"
-                onClick={handleClick}
-            >
-                Create New Prompt +
-            </button>
-
-            {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-2 rounded-md z-10 w-full md:max-w-md">
-                        <CreateNewPostForm onSubmit={handleCreatePost} onClose={() => setShowModal(false)} />
-                    </div>
-                </div>
-            )}
-        </div>
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button
+                    variant="hover"
+                    className="mt-5"
+                >
+                    Create New Prompt +
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Post a Prompt</DialogTitle>
+                    <DialogDescription>
+                        Share your prompt with the community
+                    </DialogDescription>
+                </DialogHeader>
+                <CreateNewPostForm onSubmit={handleCreatePost}/>
+            </DialogContent>
+        </Dialog>
     )
 }
 
