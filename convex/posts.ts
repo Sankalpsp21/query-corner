@@ -10,19 +10,12 @@ import {
 import { internal } from "./_generated/api";
 import { mustGetCurrentUser } from "./users";
 import { EXAMPLE_DATA } from "./constants";
+import { Id } from "./_generated/dataModel";
 
-
-export type SearchResult = {
-    _id: string;
-    _score: number;
-    _authorId: string | null;
-    title: string;
-    description: string;
-    prompt: string;
-    likes: number;
-    platform: string | null;
-    tags: string[] | null;
-  };
+export interface idResult {
+  _id: Id<"posts">;
+  _score: number;
+}
 
 //For initially populating the posts table with the example data
   export const populate = action({
@@ -126,6 +119,20 @@ export type SearchResult = {
     });
 
 
+    export type SearchResultVector = {
+      _id: Id<"posts">;
+      _creationTime: number;
+      _score: number | null;
+      _authorId: Id<"users"> | null;
+      title: string;
+      description: string;
+      prompt: string;
+      likes: number;
+      platform: string | null;
+      tags: string[] | null;
+    };
+
+
   //For getting the posts from the posts table
   export const list = query({
     args: { paginationOpts: paginationOptsValidator },
@@ -139,33 +146,50 @@ export type SearchResult = {
     }
   });
     
-  //Helper function for getting the matching posts based on the query and tags
-  export const fetchResults = internalQuery({
-        args: {
-          results: v.array(v.object({ _id: v.id("posts"), _score: v.float64() })),
-        },
-        handler: async (ctx, args) => {
-          const out: SearchResult[] = [];
-          for (const result of args.results) {
-            const doc = await ctx.db.get(result._id);
-            if (!doc) {
-              continue;
-            }
-            out.push({
-              _id: doc._id,
-              _score: result._score,
-              _authorId: doc.authorId !== undefined ? doc.authorId : null,
-                title: doc.title,
-                description: doc.description,
-                prompt: doc.prompt,
-                likes: doc.likes,
-                platform: doc.platform !== undefined ? doc.platform : null,
-                tags: doc.tags !== undefined ? doc.tags : null
-            });
-          }
-          return out;
-        },
-      });
+  //Helper function for getting a list of posts given a list of postIds
+  export const fetchResults = query({
+    args: {
+      results: v.array(v.object({ _id: v.id("posts"), _score: v.float64() })),
+      tags: v.optional(v.array(v.string()))
+    },
+    handler: async (ctx, args) => {
+      const out: SearchResultVector[] = [];
+      const tagsFilter = args.tags
+      for (const result of args.results) {
+        const doc = await ctx.db.get(result._id);
+        if (!doc) {
+          continue;
+        }
+        out.push({
+          _id: doc._id,
+          _creationTime: doc._creationTime,
+          _score: result._score,
+          _authorId: doc.authorId !== undefined ? doc.authorId : null,
+          title: doc.title,
+          description: doc.description,
+          prompt: doc.prompt,
+          likes: doc.likes,
+          platform: doc.platform !== undefined ? doc.platform : null,
+          tags: doc.tags !== undefined ? doc.tags : null,
+        });
+      }
+      
+      //If filters were passed in, filter on tags
+      if(tagsFilter && tagsFilter.length != 0) {
+        return out.filter((post) => 
+        tagsFilter.some((queryTag) => 
+        post.tags?.some((postTag) => 
+        postTag.toLowerCase() === queryTag.toLowerCase()
+        )
+        )
+        );
+      }
+      console.log("Fetching results!", out)
+
+      //else return everything
+      return out;
+    },
+  });
     
 
       //Function to delete a post

@@ -1,45 +1,86 @@
 "use client";
 
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
-import PromptCard from "@/components/PromptCard";
 import { api } from "@/convex/_generated/api";
-import { usePaginatedQuery, useMutation } from "convex/react"; //As opposed to useQuery which doesn't support pagination
-import { Id } from "@/convex/_generated/dataModel";
+import { useAction } from "convex/react"; //As opposed to useQuery which doesn't support pagination
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { idResult } from "@/convex/posts";
+import SearchResults from "@/components/SearchResults"
+
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form"
+import { Tag, TagInput } from "@/components/ui/tag-input";
+import { useEffect } from "react"
+
+const searchFormSchema = z.object({
+  query: z.string().min(0).max(300),
+  tags: z.optional(
+      z.array(
+      z.object({
+        id: z.string(),
+        text: z.string(),
+      }))
+  )
+})
+
+export interface SearchParams {
+  results: idResult[];
+  tags?: string[]; 
+}
 import CreatePost from "@/components/CreatePost";
 
 export default function Dashboard() {
-  const { results, status, loadMore } = usePaginatedQuery(
-    api.posts.list,
-    {},
-    { initialNumItems: 5 },
-  );
+  const search = useAction(api.search.similarPosts); 
 
-  const likePost = useMutation(api.userLikes.like);
-  const unlikePost = useMutation(api.userLikes.unlike);
-  const savePost = useMutation(api.userSaves.save);
-  const unsavePost = useMutation(api.userSaves.unsave);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [queryTags, setQueryTags] = useState<string[] | undefined>();
+  const [fetchedIds, setFetchedIds] = useState<idResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchParams>({results: []})
+  
+  const form = useForm<z.infer<typeof searchFormSchema>>({
+    resolver: zodResolver(searchFormSchema)
+  })
 
-  function clickedLike(postId: Id<"posts">) {
-    likePost({ postId: postId });
-  }
+  const { setValue } = form;
 
-  function clickedUnlike(postId: Id<"posts">) {
-    unlikePost({ postId: postId });
-  }
+  useEffect(() => {
+    console.log(queryTags)
+  }, [queryTags]);
 
-  function clickedSave(postId: Id<"posts">) {
-    savePost({ postId: postId });
-  }
 
-  function clickedUnsave(postId: Id<"posts">) {
-    unsavePost({ postId: postId });
-  }
+  useEffect(() => {
+      const searchParams: SearchParams = { results: fetchedIds };
+      if (queryTags) {
+        searchParams.tags = queryTags;
+      }
+      setSearchResults(searchParams);
+      console.log("Created search Params", searchParams);
+  }, [fetchedIds]);
+
+  
+  const onSubmit = async (values: z.infer<typeof searchFormSchema>) => {
+    console.log(values);
+  
+    const searchTerm = values.query;
+    setQueryTags(values.tags?.map(tag => tag.text));
+  
+    // Do vector search and get matching post ids and scores
+    const res = await search({ query: searchTerm });
+    setFetchedIds(res);
+  };
 
   return (
     <main>
-      {/* For Footer to appear at the bottom, and the page
-        to not have unnecessary scrollbar, the subtrahend
-        inside calc() must be the same height as the header + footer */}
       <div className="grid grid-cols-[240px_minmax(0,1fr)]">
 
         <StickySidebar className="top-[calc(2.5rem+1px)] h-[calc(100vh-(5rem+2px))] m-1 p-3 rounded-md bg-primary-foreground border flex flex-col items-start">
@@ -51,29 +92,64 @@ export default function Dashboard() {
         </StickySidebar>
 
         <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
-          <div className="ml-4">
-            <CreatePost />
+
+          {/* Search Bar */}
+          <div style={{ minHeight:"7rem" }}>
+            <div className="min-w-3xl max-w-3xl mx-auto pt-3 rounded-2xl px-8 shadow-input bg-primary-foreground border" >
+              <Form {...form}>
+                <form 
+                  onSubmit={form.handleSubmit(onSubmit)} 
+                  className="flex items-start mt-2 mb-3 gap-5"  
+                  
+                >
+                  <FormField
+                    control={form.control}
+                    name="query"
+                    render={({ field }) => (
+                      <FormItem style={{flexGrow: 3}}>
+                        <FormControl>
+                          <Input 
+                            placeholder="Search for a prompt" {...field}
+                            className="hover:border-primary hover:cursor-pointer"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="tags"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormControl>
+                          <TagInput
+                            {...field}
+                            placeholder="Enter a topic (optional)"
+                            inputFieldPostion="top"
+                            className="hover:border-primary hover:cursor-pointer"
+                            size="sm"
+                            tags={tags}
+                            setTags={(newTags) => {
+                              setTags(newTags);
+                              setValue("tags", newTags as [Tag, ...Tag[]]);
+                            }}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button type="submit">Search</Button>
+                </form>
+              </Form>
+            </div>
           </div>
-          <div className="p-4 grid grid-cols-4 gap-4">
-            {results &&
-              results.map((p) => {
-                return (
-                  <PromptCard
-                    prompt={{
-                      ...p,
-                      authorId: p.authorId ? String(p.authorId) : null,
-                      tags: p.tags ? p.tags : null,
-                      platform: p.platform ? p.platform : null,
-                    }}
-                    likeCallback={clickedLike}
-                    unlikeCallback={clickedUnlike}
-                    saveCallback={clickedSave}
-                    unsaveCallback={clickedUnsave}
-                    key={p._id}
-                  ></PromptCard>
-                );
-              })}
-          </div>
+
+          <SearchResults
+            searchParams={searchResults}
+          />
         </div>
       </div>
     </main>

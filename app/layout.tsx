@@ -7,7 +7,7 @@ import Nav from "@/components/Nav";
 import CustomFooter from "@/components/CustomFooter";
 import ConvexClientProvider from "@/components/providers/ConvexClientProvider";
 import CustomBackground from "@/components/CustomBackground";
-
+import { Toaster } from "@/components/ui/toaster"
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -40,6 +40,7 @@ export default function RootLayout({
             <CustomBackground>
               <Nav />
               {children}
+              <Toaster/>
               <CustomFooter />  
 
             </CustomBackground>
