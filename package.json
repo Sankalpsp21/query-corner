@@ -58,7 +58,7 @@
     "autoprefixer": "10.4.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "cmdk": "^0.2.0",
+    "cmdk": "^0.2.1",
     "convex": "^1.5.1",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
@@ -75,6 +75,7 @@
     "react": "18.2.0",
     "react-day-picker": "^8.9.1",
     "react-dom": "18.2.0",
+    "react-easy-sort": "^1.6.0",
     "react-hook-form": "^7.47.0",
     "react-loader-spinner": "^6.1.6",
     "react-remove-scroll": "^2.5.6",
@@ -84,10 +85,12 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
+    "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/react-tag-input": "^6.6.6",
+    "@types/uuid": "^9.0.8",
     "npm-run-all": "^4.1.5"
   }
 }
