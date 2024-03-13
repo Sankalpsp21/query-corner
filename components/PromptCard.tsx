@@ -34,15 +34,19 @@ const PromptCard = (props: {
   const saved = useQuery(api.userSaves.isSaved, { postId: props.prompt._id});
   const [ localLikes , setLocalLikes ] = useState(0)
   const [ localIsLiked, setLocalIsLiked ] = useState(liked ? true : false)
+  const [ localIsSaved, setLocalIsSaved] = useState(saved ? true : false)
 
   useEffect(() => {
     setLocalLikes(props.prompt.likes);
   }, []);
 
   useEffect(() => {
-    console.log(liked)
     setLocalIsLiked(liked ? true : false)
   }, [liked]);
+
+  useEffect(() => {
+    setLocalIsSaved(saved ? true : false)
+  }, [saved]);
 
   return (
     <Card className="p-4 bg-primary-foreground shadow">
@@ -61,7 +65,7 @@ const PromptCard = (props: {
         </p>
       </div>
 
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 mb-1">
         {props.prompt.tags?.map((tag) => {
           return (
               <Badge key={tag}>
@@ -111,14 +115,20 @@ const PromptCard = (props: {
             style={{minWidth: "1.5rem", minHeight: "1.5rem", cursor: "pointer"}}
           />
         )}
-        {saved ? (
+        {localIsSaved ? (
           <BookmarkFilledIcon 
-            onClick={(e) => props.unsaveCallback(props.prompt._id)}
+            onClick={(e) => {
+              props.unsaveCallback(props.prompt._id)
+              setLocalIsSaved(false)
+            }}
             style={{minWidth: "1.5rem", minHeight: "1.5rem", color: "purple", cursor: "pointer"}}
           />
         ) : (
           <BookmarkIcon 
-            onClick={(e) => props.saveCallback(props.prompt._id)}
+            onClick={(e) => {
+              props.saveCallback(props.prompt._id)
+              setLocalIsSaved(true)
+            }}
             style={{minWidth: "1.5rem", minHeight: "1.5rem", cursor: "pointer"}}
           />
         )}
