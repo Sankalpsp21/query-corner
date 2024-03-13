@@ -37,7 +37,13 @@ const PromptCard = (props: {
         <h2 className="text-xl font-medium line-clamp-1 hover:underline hover:cursor-pointer">
           {props.prompt.title}
         </h2>
-        <p className="text-sm rounded-md py-1 px-2 bg-muted">
+        <p className={`text-sm rounded-md py-1 px-2 ${
+          props.prompt._score >= 0.6
+                    ? 'bg-green-800'
+                    : props.prompt._score >= 0.3
+                    ? 'bg-yellow-700'
+                    : 'bg-red-800'
+                }`}>
           {(props.prompt._score * 100).toFixed(1)}%
         </p>
       </div>
