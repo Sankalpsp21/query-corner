@@ -12,8 +12,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
+import React from "react";
 
 interface CreateNewPostFormProps {
   onSubmit: (data: FormData) => void;
@@ -83,7 +82,11 @@ export function CreateNewPostForm({ onSubmit, onClose }: CreateNewPostFormProps)
               <FormItem className="flex flex-col items-start mb-4">
                 <FormLabel className="text-left">Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your title here" {...field} />
+                  <textarea
+                    placeholder="Enter your title here"
+                    {...field}
+                    className="border rounded-md p-2 w-full"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,7 +99,11 @@ export function CreateNewPostForm({ onSubmit, onClose }: CreateNewPostFormProps)
               <FormItem className="flex flex-col items-start mb-4">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your description here" {...field} />
+                  <textarea
+                    placeholder="Enter your description here"
+                    {...field}
+                    className="border rounded-md p-2 w-full"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -109,7 +116,11 @@ export function CreateNewPostForm({ onSubmit, onClose }: CreateNewPostFormProps)
               <FormItem className="flex flex-col items-start mb-4">
                 <FormLabel>Prompt</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your prompt here" {...field} />
+                  <textarea
+                    placeholder="Enter your prompt here"
+                    {...field}
+                    className="border rounded-md p-2 w-full"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -123,13 +134,14 @@ export function CreateNewPostForm({ onSubmit, onClose }: CreateNewPostFormProps)
                 <FormLabel>Tags</FormLabel>
                 <FormControl>
                   <TagInput
-                    {...field}
                     placeholder="Enter tags seperated by commas"
+                    {...field}
                     tags={tags}
                     setTags={(newTags) => {
                       setTags(newTags);
                       setValue("tags", newTags as [Tag, ...Tag[]]);
                     }}
+                    className="border rounded-md p-2 w-full"
                   />
                 </FormControl>
                 <FormMessage />

@@ -40,7 +40,7 @@ const CreatePost = () => {
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center">
                     <div className="absolute inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-2 rounded-md z-10 w-full md:max-w-md"> {/* Adjusted width */}
+                    <div className="bg-white p-2 rounded-md z-10 w-full md:max-w-md">
                         <CreateNewPostForm onSubmit={handleCreatePost} onClose={() => setShowModal(false)} />
                     </div>
                 </div>

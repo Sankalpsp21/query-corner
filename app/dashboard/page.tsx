@@ -15,25 +15,25 @@ export default function Dashboard() {
   );
 
   const likePost = useMutation(api.userLikes.like);
-  const unlikePost = useMutation(api.userLikes.unlike); 
+  const unlikePost = useMutation(api.userLikes.unlike);
   const savePost = useMutation(api.userSaves.save);
   const unsavePost = useMutation(api.userSaves.unsave);
 
-function clickedLike(postId: Id<"posts">) {
+  function clickedLike(postId: Id<"posts">) {
     likePost({ postId: postId });
-}
+  }
 
-function clickedUnlike(postId: Id<"posts">) {
+  function clickedUnlike(postId: Id<"posts">) {
     unlikePost({ postId: postId });
-}
+  }
 
-function clickedSave(postId: Id<"posts">) {
+  function clickedSave(postId: Id<"posts">) {
     savePost({ postId: postId });
-}
+  }
 
-function clickedUnsave(postId: Id<"posts">) {
+  function clickedUnsave(postId: Id<"posts">) {
     unsavePost({ postId: postId });
-}
+  }
 
   return (
     <main>
@@ -49,9 +49,11 @@ function clickedUnsave(postId: Id<"posts">) {
           <div>Example link</div>
           <div>Example link</div>
         </StickySidebar>
-        
+
         <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
-        <CreatePost />
+          <div className="ml-4">
+            <CreatePost />
+          </div>
           <div className="p-4 grid grid-cols-4 gap-4">
             {results &&
               results.map((p) => {
@@ -70,7 +72,7 @@ function clickedUnsave(postId: Id<"posts">) {
                     key={p._id}
                   ></PromptCard>
                 );
-            })}
+              })}
           </div>
         </div>
       </div>
