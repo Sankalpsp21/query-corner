@@ -6,14 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TagInput } from "@/components/ui/tag-input";
+import { Tag, TagInput } from "@/components/ui/tag-input";
 
 interface CreateNewPostFormProps {
     onSubmit: (data: FormData) => void;
@@ -24,17 +23,16 @@ interface FormData {
     title: string;
     description: string;
     prompt: string;
-    tags: string[];
+    tags: Tag[];
 }
 
 export function CreateNewPostForm({ onSubmit, onClose } : CreateNewPostFormProps) {
-  const [tags, setTags] = useState<string[]>([]);
 
   const formSchema = z.object({
     title: z.string(),
     description: z.string(),
     prompt: z.string(),
-    tags: z.array(z.string()), //array of strings
+    tags: z.array(z.object({ id: z.string(), text: z.string() })),
   });
 
   const form = useForm<FormData>({
@@ -43,16 +41,21 @@ export function CreateNewPostForm({ onSubmit, onClose } : CreateNewPostFormProps
       title: "",
       description: "",
       prompt: "",
-      tags: [], //set default value for tags as an empty array
+      tags: [],
     },
   });
 
   function handleSubmit(data: FormData) {
     onSubmit(data);
     console.log("Form data submitted:", data);
-  };
+  }
+
+  const [tags, setTags] = React.useState<Tag[]>([]);
+  const { setValue } = form;
 
   return (
+
+    
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <div className="flex justify-between items-center">
         <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
@@ -110,12 +113,17 @@ export function CreateNewPostForm({ onSubmit, onClose } : CreateNewPostFormProps
             control={form.control}
             name="tags"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tags</FormLabel>
+              <FormItem className="flex flex-col items-start">
+                <FormLabel className="text-left">Tags</FormLabel>
                 <FormControl>
                   <TagInput
+                    {...field}
+                    placeholder="Enter a tag"
                     tags={tags}
-                    setTags={setTags}
+                    setTags={(newTags) => {
+                      setTags(newTags);
+                      setValue("tags", newTags as [Tag, ...Tag[]]);
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
