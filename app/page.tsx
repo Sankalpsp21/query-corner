@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+import { MacbookScroll } from "@/components/ui/macbook-scroll";
 import { SignInButton } from "@clerk/clerk-react";
+import Link from "next/link";
 
 export default function Home() {
 
@@ -171,6 +173,16 @@ export default function Home() {
 
             </div>
       </div>
+
+      {/* <MacbookScroll
+        title={
+          <span>
+            This Macbook is built with Tailwindcss. <br /> No kidding.
+          </span>
+        }
+        src={`/dashboard.png`}
+        showGradient={true}
+      /> */}
 
       <motion.div
         variants={infiniteCards}

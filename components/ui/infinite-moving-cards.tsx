@@ -97,7 +97,7 @@ export const InfiniteMovingCards = ({
         )}
       >
         {items.map((item, idx) => (
-          <Card className="w-[350px] max-w-full relative rounded-2xl flex-shrink-0 px-8 py-6 md:w-[450px]">
+          <Card key={idx} className="w-[350px] max-w-full relative rounded-2xl flex-shrink-0 px-8 py-6 md:w-[450px]">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-xl font-medium line-clamp-1 hover:underline hover:cursor-pointer">
                 {item.title}
