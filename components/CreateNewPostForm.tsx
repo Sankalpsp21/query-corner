@@ -1,8 +1,3 @@
-import React, { useState } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -11,32 +6,43 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Tag, TagInput } from "@/components/ui/tag-input";
+import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
+import { toast } from "@/components/ui/use-toast";
 
 interface CreateNewPostFormProps {
-    onSubmit: (data: FormData) => void;
-    onClose: () => void;
+  onSubmit: (data: FormData) => void;
+  onClose: () => void;
 }
 
 interface FormData {
-    title: string;
-    description: string;
-    prompt: string;
-    tags: Tag[];
+  title: string;
+  description: string;
+  prompt: string;
+  tags: Tag[];
 }
 
-export function CreateNewPostForm({ onSubmit, onClose } : CreateNewPostFormProps) {
+const FormSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  prompt: z.string(),
+  tags: z.array(
+    z.object({
+      id: z.string(),
+      text: z.string(),
+    })
+  ),
+});
 
-  const formSchema = z.object({
-    title: z.string(),
-    description: z.string(),
-    prompt: z.string(),
-    tags: z.array(z.object({ id: z.string(), text: z.string() })),
-  });
+export function CreateNewPostForm({ onSubmit, onClose }: CreateNewPostFormProps) {
 
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -45,17 +51,17 @@ export function CreateNewPostForm({ onSubmit, onClose } : CreateNewPostFormProps
     },
   });
 
-  function handleSubmit(data: FormData) {
+  const [tags, setTags] = React.useState<Tag[]>([]);
+
+  const { setValue } = form;
+
+  function handleSubmit(data: z.infer<typeof FormSchema>) {
     onSubmit(data);
     console.log("Form data submitted:", data);
   }
 
-  const [tags, setTags] = React.useState<Tag[]>([]);
-  const { setValue } = form;
-
   return (
 
-    
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <div className="flex justify-between items-center">
         <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
@@ -74,8 +80,8 @@ export function CreateNewPostForm({ onSubmit, onClose } : CreateNewPostFormProps
             control={form.control}
             name="title"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
+              <FormItem className="flex flex-col items-start mb-4">
+                <FormLabel className="text-left">Title</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter your title here" {...field} />
                 </FormControl>
@@ -87,7 +93,7 @@ export function CreateNewPostForm({ onSubmit, onClose } : CreateNewPostFormProps
             control={form.control}
             name="description"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex flex-col items-start mb-4">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter your description here" {...field} />
@@ -100,7 +106,7 @@ export function CreateNewPostForm({ onSubmit, onClose } : CreateNewPostFormProps
             control={form.control}
             name="prompt"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex flex-col items-start mb-4">
                 <FormLabel>Prompt</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter your prompt here" {...field} />
@@ -113,12 +119,12 @@ export function CreateNewPostForm({ onSubmit, onClose } : CreateNewPostFormProps
             control={form.control}
             name="tags"
             render={({ field }) => (
-              <FormItem className="flex flex-col items-start">
-                <FormLabel className="text-left">Tags</FormLabel>
+              <FormItem className="flex flex-col items-start mb-4">
+                <FormLabel>Tags</FormLabel>
                 <FormControl>
                   <TagInput
                     {...field}
-                    placeholder="Enter a tag"
+                    placeholder="Enter tags seperated by commas"
                     tags={tags}
                     setTags={(newTags) => {
                       setTags(newTags);
