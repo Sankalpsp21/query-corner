@@ -1,5 +1,4 @@
-"use client";
-
+'use client';
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
 import { api } from "@/convex/_generated/api";
 import { useAction } from "convex/react"; //As opposed to useQuery which doesn't support pagination
@@ -9,7 +8,6 @@ import { useState } from "react";
 import { idResult } from "@/convex/posts";
 import SearchResults from "@/components/SearchResults"
 import CreatePost from "@/components/CreatePost";
-
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -22,6 +20,18 @@ import {
 } from "@/components/ui/form"
 import { Tag, TagInput } from "@/components/ui/tag-input";
 import { useEffect } from "react"
+import { Minus, Plus } from "lucide-react"
+
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 
 const searchFormSchema = z.object({
   query: z.string().min(0).max(300),
@@ -84,8 +94,8 @@ export default function Dashboard() {
       <div className="grid grid-cols-[240px_minmax(0,1fr)]">
 
         <StickySidebar className="top-[calc(2.5rem+1px)] h-[calc(100vh-(5rem+2px))] m-1 p-3 rounded-md bg-primary-foreground border flex flex-col items-start">
-          <div>Sticky sidebar</div>
-          <div>Example link</div>
+          <div>Sticky Sidebar</div>
+          <div>Example link #1</div>
           <div>Example link</div>
           <div>Example link</div>
           <div>Example link</div>
