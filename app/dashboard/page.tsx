@@ -46,6 +46,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<SearchResultVector[]>([]);
   
+  //For initially loading the page
   useEffect(() => {
     search({query: ""}).then((res) => {
       setPosts(res);
