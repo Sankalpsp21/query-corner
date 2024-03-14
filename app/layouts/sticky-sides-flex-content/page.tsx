@@ -17,7 +17,7 @@ export default function Layout() {
         inside calc() must be the same height as the header + footer */}
       <div className="grid grid-cols-[240px_minmax(0,1fr)]">
         <StickySidebar className="top-[calc(2.5rem+1px)] h-[calc(100vh-(5rem+2px))]">
-          <div>Sticky sidebar</div>
+          <div>Sticky Sidebar</div>
           <FakeWordList count={60} length={[4, 15]} />
         </StickySidebar>
         <main className="h-full overflow-y-auto p-4">

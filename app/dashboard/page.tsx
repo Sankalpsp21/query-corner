@@ -1,5 +1,4 @@
-"use client";
-
+'use client';
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
 import { api } from "@/convex/_generated/api";
 import { useAction } from "convex/react"; //As opposed to useQuery which doesn't support pagination
@@ -10,7 +9,6 @@ import { idResult } from "@/convex/posts";
 import { PersonIcon, BookmarkFilledIcon, CounterClockwiseClockIcon } from "@radix-ui/react-icons"
 import SearchResults from "@/components/SearchResults"
 import CreatePost from "@/components/CreatePost";
-
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -23,6 +21,18 @@ import {
 } from "@/components/ui/form"
 import { Tag, TagInput } from "@/components/ui/tag-input";
 import { useEffect } from "react"
+import { Minus, Plus } from "lucide-react"
+
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 
 const searchFormSchema = z.object({
   query: z.string().min(0).max(300),

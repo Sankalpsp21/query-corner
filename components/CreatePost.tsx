@@ -10,7 +10,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from "@/components/ui/dialog"
+} from "@/components/ui/dialog"
 
 export interface PostData {
     title: string;
@@ -46,7 +46,7 @@ const CreatePost = () => {
                         Share your prompt with the community
                     </DialogDescription>
                 </DialogHeader>
-                <CreateNewPostForm onSubmit={handleCreatePost}/>
+                <CreateNewPostForm onSubmit={handleCreatePost} />
             </DialogContent>
         </Dialog>
     )
