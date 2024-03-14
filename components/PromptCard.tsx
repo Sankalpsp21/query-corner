@@ -11,7 +11,7 @@ import {
 } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 import { api } from "@/convex/_generated/api";
-import { useConvexAuth, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import { useEffect, useRef, useState } from "react";
 import { SearchResultVector } from "@/convex/posts";
@@ -19,7 +19,6 @@ import {
   Drawer,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";

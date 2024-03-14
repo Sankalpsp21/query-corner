@@ -5,7 +5,6 @@ import { internal } from "./_generated/api";
 import { EXAMPLE_DATA } from "./constants";
 import { Id } from "./_generated/dataModel";
 import { getCurrentUser } from "./users";
-
 export interface idResult {
   _id: Id<"posts">;
   _score: number;

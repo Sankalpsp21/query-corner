@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
 import { api } from "@/convex/_generated/api";
 import { useAction } from "convex/react"; //As opposed to useQuery which doesn't support pagination
@@ -6,85 +6,78 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { idResult } from "@/convex/posts";
-import { PersonIcon, BookmarkFilledIcon, CounterClockwiseClockIcon } from "@radix-ui/react-icons"
-import SearchResults from "@/components/SearchResults"
+import {
+  PersonIcon,
+  BookmarkFilledIcon,
+  CounterClockwiseClockIcon,
+} from "@radix-ui/react-icons";
+import SearchResults from "@/components/SearchResults";
 import CreatePost from "@/components/CreatePost";
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import { Tag, TagInput } from "@/components/ui/tag-input";
-import { useEffect } from "react"
-import { Minus, Plus } from "lucide-react"
-
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
+import { useEffect } from "react";
 
 const searchFormSchema = z.object({
   query: z.string().min(0).max(300),
   tags: z.optional(
-      z.array(
+    z.array(
       z.object({
         id: z.string(),
         text: z.string(),
-      }))
-  )
-})
+      })
+    )
+  ),
+});
 
 export interface SearchParams {
   results: idResult[];
-  tags?: string[]; 
+  tags?: string[];
 }
 
 export default function Dashboard() {
-  const search = useAction(api.search.similarPosts); 
+  const search = useAction(api.search.similarPosts);
 
   const [tags, setTags] = useState<Tag[]>([]);
   const [queryTags, setQueryTags] = useState<string[] | undefined>();
   const [fetchedIds, setFetchedIds] = useState<idResult[]>([]);
-  const [searchResults, setSearchResults] = useState<SearchParams>({results: []})
-  
+  const [searchResults, setSearchResults] = useState<SearchParams>({
+    results: [],
+  });
+
   const form = useForm<z.infer<typeof searchFormSchema>>({
-    resolver: zodResolver(searchFormSchema)
-  })
+    resolver: zodResolver(searchFormSchema),
+  });
 
   const { setValue } = form;
 
   useEffect(() => {
-    console.log(queryTags)
+    console.log(queryTags);
   }, [queryTags]);
 
-
   useEffect(() => {
-      const searchParams: SearchParams = { results: fetchedIds };
-      if (queryTags) {
-        searchParams.tags = queryTags;
-      }
-      setSearchResults(searchParams);
-      console.log("Created search Params", searchParams);
-  }, [fetchedIds]);
+    const searchParams: SearchParams = { results: fetchedIds };
+    if (queryTags) {
+      searchParams.tags = queryTags;
+    }
+    setSearchResults(searchParams);
+    console.log("Created search Params", searchParams);
+  }, [fetchedIds, queryTags]);
 
-  
   const onSubmit = async (values: z.infer<typeof searchFormSchema>) => {
     console.log(values);
-  
+
     const searchTerm = values.query;
-    setQueryTags(values.tags?.map(tag => tag.text));
-  
+    setQueryTags(values.tags?.map((tag) => tag.text));
+
     // Do vector search and get matching post ids and scores
     const res = await search({ query: searchTerm });
     setFetchedIds(res);
@@ -93,69 +86,65 @@ export default function Dashboard() {
   return (
     <main>
       <div className="grid grid-cols-[240px_minmax(0,1fr)]">
-
         <StickySidebar className="top-[calc(2.5rem+1px)] h-[calc(100vh-(5rem+2px))] p-3 rounded-md bg-primary-foreground border">
           <div className="flex flex-col gap-2">
-            <Button
-              variant="outline"
-              style={{minWidth: "100%"}}
-            >
+            <Button variant="outline" style={{ minWidth: "100%" }}>
               <span className="flex justify-between gap-1 items-center">
-                <PersonIcon 
-                  style={{minWidth: "1.5rem", minHeight: "1.5rem", color: "grey",}}
+                <PersonIcon
+                  style={{
+                    minWidth: "1.5rem",
+                    minHeight: "1.5rem",
+                    color: "grey",
+                  }}
                 />
                 My Prompts
-
               </span>
             </Button>
-            <Button
-              variant="outline"
-              style={{minWidth: "100%"}}
-            >
+            <Button variant="outline" style={{ minWidth: "100%" }}>
               <span className="flex justify-between gap-1 items-center">
-                <BookmarkFilledIcon 
-                  style={{minWidth: "1.5rem", minHeight: "1.5rem", color: "grey",}}
+                <BookmarkFilledIcon
+                  style={{
+                    minWidth: "1.5rem",
+                    minHeight: "1.5rem",
+                    color: "grey",
+                  }}
                 />
                 Saved Prompts
-
               </span>
             </Button>
-            <Button
-              variant="outline"
-              style={{minWidth: "100%"}}
-            >
+            <Button variant="outline" style={{ minWidth: "100%" }}>
               <span className="flex justify-between gap-1 items-center">
-                <CounterClockwiseClockIcon 
-                  style={{minWidth: "1.5rem", minHeight: "1.5rem", color: "grey",}}
+                <CounterClockwiseClockIcon
+                  style={{
+                    minWidth: "1.5rem",
+                    minHeight: "1.5rem",
+                    color: "grey",
+                  }}
                 />
                 Search History
-
               </span>
             </Button>
-
           </div>
         </StickySidebar>
 
         <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
-
           {/* Search Bar */}
-          <div className="flex items-start" style={{ minHeight:"7rem" }}>
-            
-            <div className="min-w-3xl max-w-3xl mx-auto pt-3 rounded-2xl px-8 shadow-input bg-primary-foreground border" >
+          <div className="flex items-start" style={{ minHeight: "7rem" }}>
+            <div className="min-w-3xl max-w-3xl mx-auto pt-3 rounded-2xl px-8 shadow-input bg-primary-foreground border">
               <Form {...form}>
-                <form 
-                  onSubmit={form.handleSubmit(onSubmit)} 
-                  className="flex items-start mt-2 mb-3 gap-5"  
-                  
+                <form
+                  onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
+                  className="flex items-start mt-2 mb-3 gap-5"
                 >
                   <FormField
                     control={form.control}
                     name="query"
                     render={({ field }) => (
-                      <FormItem style={{flexGrow: 3}}>
+                      <FormItem style={{ flexGrow: 3 }}>
                         <FormControl>
-                          <Input 
-                            placeholder="Search for a prompt" {...field}
+                          <Input
+                            placeholder="Search for a prompt"
+                            {...field}
                             className="hover:border-primary hover:cursor-pointer"
                           />
                         </FormControl>
@@ -191,12 +180,10 @@ export default function Dashboard() {
                 </form>
               </Form>
             </div>
-            <CreatePost/>
+            <CreatePost />
           </div>
 
-          <SearchResults
-            searchParams={searchResults}
-          />
+          <SearchResults searchParams={searchResults} />
         </div>
       </div>
     </main>
