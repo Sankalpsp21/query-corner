@@ -177,13 +177,7 @@ export default function Home() {
             </div>
       </div>
 
-      <div className="flex flex-row items-center justify-center mt-16 bg-primary-foreground">
-          <h3 className="text-5xl text-center font-semibold">
-             Share your prompts with the community
-          </h3>
-      </div>
-
-      <div className="flex flex-row items-start justify-between gap-5 mt-56 mx-20 bg-primary-foreground pl-16 pr-8 py-56 rounded-2xl">
+      <div className="flex flex-row items-start justify-between gap-5 mt-56 mx-20 bg-primary-foreground pl-16 pr-8 py-56 rounded-3xl">
         <Image
             src= { theme.theme === "dark" || theme.theme === "system" || !theme.theme ? "/dashboard-dark.png" : "/dashboard-light.png"}
             alt="dashboard"
@@ -195,8 +189,11 @@ export default function Home() {
             <h3 className="text-5xl text-left font-semibold flex gap-3">
               <p className="text-indigo-500">Ditch</p> Prompt Engineering
             </h3>
-            <p className="text-2xl font-semibold">
-              Get custom tailored prompts with 
+            <p className="text-2xl font-semibold flex flex-col gap-1">
+              Get custom tailored prompts powered by <p className="text-indigo-500">Vector Search</p>
+            </p>
+            <p className="text-2xl font-semibold flex flex-col gap-1">
+            Filter by topic and save your favorites
             </p>
 
           </div>
@@ -204,10 +201,10 @@ export default function Home() {
       <div className="flex flex-row items-start justify-evenly gap-4 bg-primary-foreground px-16 py-16 mx-20">
         <div className="flex flex-col justify-start gap-5 mt-16">
           <h3 className="text-5xl text-left font-semibold">
-            Ditch Prompt Engineering
+            Unleash your creativity with personalized prompts
           </h3>
           <p className="text-2xl font-semibold">
-            Get custom tailored prompts with 
+            Expand your usecase with tempelate syntax. 
           </p>
 
         </div>
@@ -220,14 +217,13 @@ export default function Home() {
           />
       </div>
 
-
       <motion.div
         variants={infiniteCards}
         initial="hidden"
         animate="visible"
       >
         <InfiniteMovingCards
-          className="mt-96"
+          className="mt-56"
           items={examples}
           direction="right"
           speed="slow"
