@@ -3,7 +3,7 @@ import { paginationOptsValidator } from "convex/server";
 import { query, action, mutation, internalMutation } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { EXAMPLE_DATA } from "./constants";
-import { Id } from "./_generated/dataModel";
+import { Doc, Id } from "./_generated/dataModel";
 import { getCurrentUser } from "./users";
 export interface idResult {
   _id: Id<"posts">;
@@ -213,5 +213,28 @@ export const decrementLikes = internalMutation({
     if (post) {
       await ctx.db.patch(args._id, { likes: post.likes - 1 });
     }
+  },
+});
+
+export const getMyPosts = query({
+  handler: async (ctx, args) => {
+    const user = await getCurrentUser(ctx);
+
+    if (!user) return [];
+
+    const posts = await ctx.db
+      .query("posts")
+      .withIndex("authorId", (q) => q.eq("authorId", user._id))
+      .collect();
+
+    return posts.map((p): SearchResultVector => {
+      return {
+        ...p,
+        _score: null,
+        _authorId: p.authorId ?? null,
+        platform: p.platform ?? null,
+        tags: p.tags ?? null,
+      };
+    });
   },
 });

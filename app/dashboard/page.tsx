@@ -84,108 +84,64 @@ export default function Dashboard() {
   };
 
   return (
-    <main>
-      <div className="grid grid-cols-[240px_minmax(0,1fr)]">
-        <StickySidebar className="top-[calc(2.5rem+1px)] h-[calc(100vh-(5rem+2px))] p-3 rounded-md bg-primary-foreground border">
-          <div className="flex flex-col gap-2">
-            <Button variant="outline" style={{ minWidth: "100%" }}>
-              <span className="flex justify-between gap-1 items-center">
-                <PersonIcon
-                  style={{
-                    minWidth: "1.5rem",
-                    minHeight: "1.5rem",
-                    color: "grey",
-                  }}
-                />
-                My Prompts
-              </span>
-            </Button>
-            <Button variant="outline" style={{ minWidth: "100%" }}>
-              <span className="flex justify-between gap-1 items-center">
-                <BookmarkFilledIcon
-                  style={{
-                    minWidth: "1.5rem",
-                    minHeight: "1.5rem",
-                    color: "grey",
-                  }}
-                />
-                Saved Prompts
-              </span>
-            </Button>
-            <Button variant="outline" style={{ minWidth: "100%" }}>
-              <span className="flex justify-between gap-1 items-center">
-                <CounterClockwiseClockIcon
-                  style={{
-                    minWidth: "1.5rem",
-                    minHeight: "1.5rem",
-                    color: "grey",
-                  }}
-                />
-                Search History
-              </span>
-            </Button>
-          </div>
-        </StickySidebar>
+    <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
+      <h1 className="text-3xl mb-4">Dashboard</h1>
+      {/* Search Bar */}
+      <div className="flex items-start" style={{ minHeight: "7rem" }}>
+        <div className="min-w-3xl max-w-3xl mx-auto pt-3 rounded-2xl px-8 shadow-input bg-primary-foreground border">
+          <Form {...form}>
+            <form
+              onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
+              className="flex items-start mt-2 mb-3 gap-5"
+            >
+              <FormField
+                control={form.control}
+                name="query"
+                render={({ field }) => (
+                  <FormItem style={{ flexGrow: 3 }}>
+                    <FormControl>
+                      <Input
+                        placeholder="Search for a prompt"
+                        {...field}
+                        className="hover:border-primary hover:cursor-pointer"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
-          {/* Search Bar */}
-          <div className="flex items-start" style={{ minHeight: "7rem" }}>
-            <div className="min-w-3xl max-w-3xl mx-auto pt-3 rounded-2xl px-8 shadow-input bg-primary-foreground border">
-              <Form {...form}>
-                <form
-                  onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
-                  className="flex items-start mt-2 mb-3 gap-5"
-                >
-                  <FormField
-                    control={form.control}
-                    name="query"
-                    render={({ field }) => (
-                      <FormItem style={{ flexGrow: 3 }}>
-                        <FormControl>
-                          <Input
-                            placeholder="Search for a prompt"
-                            {...field}
-                            className="hover:border-primary hover:cursor-pointer"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+              <FormField
+                control={form.control}
+                name="tags"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormControl>
+                      <TagInput
+                        {...field}
+                        placeholder="Enter a topic (optional)"
+                        inputFieldPostion="top"
+                        className="hover:border-primary hover:cursor-pointer"
+                        size="sm"
+                        tags={tags}
+                        setTags={(newTags) => {
+                          setTags(newTags);
+                          setValue("tags", newTags as [Tag, ...Tag[]]);
+                        }}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-                  <FormField
-                    control={form.control}
-                    name="tags"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col">
-                        <FormControl>
-                          <TagInput
-                            {...field}
-                            placeholder="Enter a topic (optional)"
-                            inputFieldPostion="top"
-                            className="hover:border-primary hover:cursor-pointer"
-                            size="sm"
-                            tags={tags}
-                            setTags={(newTags) => {
-                              setTags(newTags);
-                              setValue("tags", newTags as [Tag, ...Tag[]]);
-                            }}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <Button type="submit">Search</Button>
-                </form>
-              </Form>
-            </div>
-            <CreatePost />
-          </div>
-
-          <SearchResults searchParams={searchResults} />
+              <Button type="submit">Search</Button>
+            </form>
+          </Form>
         </div>
+        <CreatePost />
       </div>
-    </main>
+
+      <SearchResults searchParams={searchResults} />
+    </div>
   );
 }

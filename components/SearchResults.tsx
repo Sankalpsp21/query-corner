@@ -7,6 +7,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import SkeletonGrid from "@/components/SkeletonGrid";
 import { useToast } from "@/components/ui/use-toast";
 import { SearchParams } from "@/app/dashboard/page";
+import { copyText } from "@/lib/utils";
 
 export default function SearchResults(props: { searchParams: SearchParams }) {
   //default posts for when not viewing search results
@@ -39,31 +40,6 @@ export default function SearchResults(props: { searchParams: SearchParams }) {
 
   function clickedUnsave(postId: Id<"posts">) {
     void unsavePost({ postId: postId });
-  }
-
-  function copyText(promptText: string) {
-    // Copy prompt text to clipboard
-    void navigator.clipboard.writeText(promptText);
-
-    // Construct the URL with the prompt text as a query parameter
-    const chatGPTUrl = `https://chat.openai.com/?prompt=${encodeURIComponent(
-      promptText
-    )}`;
-
-    // Show toast notification
-    toast({
-      title: "Prompt copied to clipboard",
-      description: (
-        <a
-          href={chatGPTUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline hover:text-accent"
-        >
-          Click here to paste the prompt into ChatGPT.
-        </a>
-      ),
-    });
   }
 
   return (
