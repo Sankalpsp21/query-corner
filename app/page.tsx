@@ -1,9 +1,7 @@
 "use client";
 
-
-
-
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
@@ -12,16 +10,21 @@ import { useTheme } from "next-themes";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 
-
-
-
 export default function Home() {
+const ref1 = useRef(null)
+const ref2 = useRef(null)
+const ref3 = useRef(null)
+const ref4 = useRef(null)
+const isInView1 = useInView(ref1, { once: true });
+const isInView2 = useInView(ref2, { once: true });
+const isInView3 = useInView(ref3, { once: true });
+const isInView4 = useInView(ref3, { once: true });
+
 const theme = useTheme();
 
 
-
-
 //Landing animation inspiration from https://github.com/Nyumat/TalkToBeavs/blob/deploy/frontend/src/components/landing/Hero.jsx
+
 const landingText = {
   hidden: {
     opacity: 0,
@@ -38,8 +41,6 @@ const landingText = {
     scale: 1,
   },
 };
-
-
 
 
 const landingButton = {
@@ -59,27 +60,21 @@ const landingButton = {
   },
 };
 
-
-
-
-const infiniteCards = {
+const standard = {
   hidden: {
     opacity: 0,
-    y: 40,
+    y: 100,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.8,
+      duration: 1,
       ease: "easeInOut",
-      delay: 1.5,
+      delay: 0.5,
     },
-    scale: 1,
-  },
-};
-
-
+  }
+}
 
 
 const examples = [
@@ -164,8 +159,6 @@ const examples = [
 ];
 
 
-
-
 return (
   <main>
     <div className="container flex flex-col gap-8">
@@ -179,8 +172,6 @@ return (
           </h1>
 
 
-
-
           <div className="flex flex-row items-center justify-center mt-16">
             <h3 className="text-4xl text-center font-medium">
               Tailor-made Generative AI prompts to accelerate
@@ -190,8 +181,6 @@ return (
             </h3>
           </div>
         </motion.div>
-
-
 
 
         <motion.div
@@ -218,12 +207,6 @@ return (
     </div>
 
 
-
-
-
-
-
-
     <div className="container flex justify-center mt-48">
       <Image
         src={
@@ -239,113 +222,113 @@ return (
     </div>
 
 
-
-
-
-
-
-
     <div className="flex flex-col items-center justify-evenly bg-primary-foreground rounded-3xl py-24 px-24 mx-20 mt-56 mb-16 gap-36">
-     <div className="flex flex-col items-center gap-4">
-        <h3 className="text-6xl font-medium">
-            Supercharge your workflow
-        </h3>
-        <p className="text-2xl text-center font-light mx-56">
-           Dive into the <span className="text-indigo-500">ultimate</span> platform for crafting engaging blog posts,
-           conducting thorough research, or igniting your creative spark in any project.
-           Access high-quality prompts and templates in <span className="text-indigo-500">seconds</span> .
-         </p>
-     </div>
-      <div className="flex flex-row items-start justify-between gap-48">
-       <Image
-           src={
-             theme.theme === "dark" || theme.theme === "system" || !theme.theme
-               ? "/prompt-card-dark.png"
-               : "/prompt-card-light.png"
-           }
-           alt="add prompt form"
-           className="rounded-xl inset-0 border shadow-lg"
-           height={600}
-           width={600}
-         />
+
       
-        <div className="flex flex-col justify-start gap-5">
-          <h3 className="text-5xl text-left font-medium">
-            <span className="text-indigo-500">Ditch</span> Prompt Engineering
-          </h3>
-          <p className="text-2xl font-light flex flex-col gap-1">
-            Get custom tailored prompts using Vector Search powered by Open AI's text-embedding-3 large model.
-            Be confident in your research with a semantic similarity score.
-            You can filter by tags, like, and save prompts.
-          </p>
-          <Button className="w-36">
-           <a href="https://devpost.com/software/querycorner">Learn More</a>
-          </Button>
-        </div>
+    <motion.div variants={standard} animate={isInView1 ? "visible" : "hidden"}>
+      <div ref={ref1} className="flex flex-col items-center gap-4">
+            <h3 className="text-6xl font-medium">
+                Supercharge your workflow
+            </h3>
+            <p className="text-2xl text-center font-light mx-56">
+              Dive into the <span className="text-indigo-500">ultimate</span> platform for crafting engaging blog posts,
+              conducting thorough research, or igniting your creative spark in any project.
+              Access high-quality prompts and templates in <span className="text-indigo-500">seconds</span> .
+            </p>
       </div>
+     </motion.div>
 
-
-
-
-      <div className="flex flex-row items-start justify-evenly gap-4 pb-16 mx-20">
-        <div className="flex flex-col justify-start gap-5 mt-16 ">
-          <h3 className="text-5xl text-left font-medium">
-           <span className="text-indigo-500">Unleash</span> your creativity with personalized prompts
-          </h3>
-          <p className="text-2xl font-light flex-wrap">
-            Whether it's for a blog post or a research paper, you can post a
-            prompt for other's to use. Use template syntax to enhance customization.
-            Our serverless architecture will take care of the
-            rest. It's really that easy.
-          </p>
-          <Button className="w-36">
-           <a href="https://devpost.com/software/querycorner">Learn More</a>
-          </Button>
-        </div>
+     <motion.div variants={standard} animate={isInView2 ? "visible" : "hidden"}>
+        <div ref={ref2} className="flex flex-row items-start justify-between gap-48">
         <Image
-          src={
-            theme.theme === "dark" || theme.theme === "system" || !theme.theme
-              ? "/prompt-dark.png"
-              : "/prompt-light.png"
-          }
-          alt="add prompt form"
-          className="rounded-md inset-0 border shadow-lg grow-2"
-          height={1000}
-          width={800}
-        />
+            src={
+              theme.theme === "dark" || theme.theme === "system" || !theme.theme
+                ? "/prompt-card-dark.png"
+                : "/prompt-card-light.png"
+            }
+            alt="add prompt form"
+            className="rounded-xl inset-0 border shadow-lg"
+            height={600}
+            width={600}
+          />
+        
+          <div className="flex flex-col justify-start gap-5">
+            <h3 className="text-5xl text-left font-medium">
+              <span className="text-indigo-500">Ditch</span> Prompt Engineering
+            </h3>
+            <p className="text-2xl font-light flex flex-col gap-1">
+              Get custom tailored prompts using Vector Search powered by Open AI's text-embedding-3 large model.
+              Be confident in your research with a semantic similarity score.
+              You can filter by tags, like, and save prompts.
+            </p>
+            <Button className="w-36">
+            <a href="https://devpost.com/software/querycorner">Learn More</a>
+            </Button>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.div variants={standard} animate={isInView3 ? "visible" : "hidden"}>
+        <div ref={ref3} className="flex flex-row items-start justify-evenly gap-4 pb-16 mx-20">
+          <div className="flex flex-col justify-start gap-5 mt-16 ">
+            <h3 className="text-5xl text-left font-medium">
+            <span className="text-indigo-500">Unleash</span> your creativity with personalized prompts
+            </h3>
+            <p className="text-2xl font-light flex-wrap">
+              Whether it's for a blog post or a research paper, you can post a
+              prompt for other's to use. Use template syntax to enhance customization.
+              Our serverless architecture will take care of the
+              rest. It's really that easy.
+            </p>
+            <Button className="w-36">
+            <a href="https://devpost.com/software/querycorner">Learn More</a>
+            </Button>
+          </div>
+          <Image
+            src={
+              theme.theme === "dark" || theme.theme === "system" || !theme.theme
+                ? "/prompt-dark.png"
+                : "/prompt-light.png"
+            }
+            alt="add prompt form"
+            className="rounded-md inset-0 border shadow-lg grow-2"
+            height={1000}
+            width={800}
+          />
+        </div>
+      </motion.div>
+    </div>
+
+
+    <InfiniteMovingCards
+      className="mt-8"
+      items={examples}
+      direction="right"
+      speed="slow"
+    />
+
+    
+    <motion.div variants={standard} animate={isInView4 ? "visible" : "hidden"}>
+      <div ref={ref4} className="flex flex-col items-center justify-center mt-16">
+      <h3 className="text-6xl font-medium">
+          Ready to query?
+      </h3>
+      <BackgroundGradient
+          className="p-0.1 bg-transparent "
+          containerClassName="mt-16 transform transition-transform duration-200 hover:scale-110"
+        >
+          <SignInButton mode="modal" afterSignInUrl="/dashboard">
+            <Button
+              size="lg"
+              variant="hover"
+              className="foreground text-xl font-bold text-center"
+            >
+              Join the Movement <ArrowRightIcon style={{marginLeft: "1rem", minWidth: "1.5rem", minHeight: "1.5rem"}}/>
+            </Button>
+          </SignInButton>
+        </BackgroundGradient>
       </div>
-    </div>
-
-
-    <motion.div variants={infiniteCards} initial="hidden" animate="visible">
-      <InfiniteMovingCards
-        className="mt-8"
-        items={examples}
-        direction="right"
-        speed="slow"
-      />
     </motion.div>
-
-
-    <div className="flex flex-col items-center justify-center mt-16">
-     <h3 className="text-6xl font-medium">
-         Ready to query?
-     </h3>
-     <BackgroundGradient
-         className="p-0.1 bg-transparent "
-         containerClassName="mt-16 transform transition-transform duration-200 hover:scale-110"
-       >
-         <SignInButton mode="modal" afterSignInUrl="/dashboard">
-           <Button
-             size="lg"
-             variant="hover"
-             className="foreground text-xl font-bold text-center"
-           >
-             Join the Movement <ArrowRightIcon style={{marginLeft: "1rem", minWidth: "1.5rem", minHeight: "1.5rem"}}/>
-           </Button>
-         </SignInButton>
-       </BackgroundGradient>
-    </div>
   </main>
 );
 }
