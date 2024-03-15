@@ -5,7 +5,6 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, usePaginatedQuery, useQuery } from "convex/react"; //As opposed to useQuery which doesn't support pagination
 import { Id } from "@/convex/_generated/dataModel";
 import SkeletonGrid from "@/components/SkeletonGrid";
-import { useToast } from "@/components/ui/use-toast";
 import { SearchParams } from "@/app/dashboard/page";
 import { copyText } from "@/lib/utils";
 
@@ -18,8 +17,6 @@ export default function SearchResults(props: { searchParams: SearchParams }) {
   );
 
   const posts = useQuery(api.posts.fetchResults, props.searchParams);
-
-  const { toast } = useToast();
 
   const likePost = useMutation(api.userLikes.like);
   const unlikePost = useMutation(api.userLikes.unlike);

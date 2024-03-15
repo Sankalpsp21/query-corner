@@ -46,7 +46,7 @@ export function copyText(promptText: string) {
         href={chatGPTUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="hover:underline hover:text-accent"
+        className="hover:underline"
       >
         Click here to paste the prompt into ChatGPT.
       </a>

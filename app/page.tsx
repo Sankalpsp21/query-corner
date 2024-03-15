@@ -81,7 +81,7 @@ const examples = [
   {
     title: "Financial Advisor",
     description:
-      "This prompt is about a financial advisor who specializes in retirement planning. The user is requesting the advisor to create a retirement savings plan. The advisor is asked to act as an expert in financial advising and personal finance, using their expertise to help the user secure their future. The advisor is instructed to always include a question in their response to better understand the user's context and needs.",
+      "This prompt is about a financial advisor who specializes in retirement planning. The user is requesting the advisor to create a retirement savings plan. The advisor is asked to act as an expert in financial advising and personal finance, using their expertise to help the user secure their future. The advisor is instructed to always include a question in their response to better understand the user&apos;s context and needs.",
     prompt:
       "You are an expert in financial advising and personal finance, specializing in retirement planning. You have helped many clients before me to secure their future. Your task is now to create a retirement savings plan from scratch. To better understand what I want and need, you should always answer by including a question that helps you better understand the context and my needs. I want you to act as an expert in financial advising and personal finance, specializing in retirement planning. My first suggestion request is to create a retirement savings plan. [TARGETLANGUAGE]",
     liked: true,
@@ -120,9 +120,9 @@ const examples = [
   {
     title: "Esports Coach",
     description:
-      "This prompt provides information about a job posting for an Esports Coach position. It    includes instructions for the assistant to act as an esports coach and provide guidance on improving players' skills, developing strategies, and managing team dynamics.",
+      "This prompt provides information about a job posting for an Esports Coach position. It    includes instructions for the assistant to act as an esports coach and provide guidance on improving players&apos; skills, developing strategies, and managing team dynamics.",
     prompt:
-      "You are an expert in esports coaching, with a track record of helping teams achieve success in competitive gaming. Your task is to provide guidance on improving players' skills, developing strategies, and managing team dynamics. To better understand what I want and need, you should always answer by including a question that helps you better understand the context and my needs. [TARGETLANGUAGE]. I want you to act as an esports coach. I will provide some specific information about a team's performance, and it will be your job to provide actionable advice and strategies to help them improve. My first request is I want advice on how to [PROMPT].[TARGETLANGUAGE].",
+      "You are an expert in esports coaching, with a track record of helping teams achieve success in competitive gaming. Your task is to provide guidance on improving players&apos; skills, developing strategies, and managing team dynamics. To better understand what I want and need, you should always answer by including a question that helps you better understand the context and my needs. [TARGETLANGUAGE]. I want you to act as an esports coach. I will provide some specific information about a team&apos;s performance, and it will be your job to provide actionable advice and strategies to help them improve. My first request is I want advice on how to [PROMPT].[TARGETLANGUAGE].",
     liked: true,
     saved: false,
     likes: 84,
@@ -257,7 +257,7 @@ return (
               <span className="text-indigo-500">Ditch</span> Prompt Engineering
             </h3>
             <p className="text-2xl font-light flex flex-col gap-1">
-              Get custom tailored prompts using Vector Search powered by Open AI's text-embedding-3 large model.
+              Get custom tailored prompts using Vector Search powered by Open AI&apos;s text-embedding-3 large model.
               Be confident in your research with a semantic similarity score.
               You can filter by tags, like, and save prompts.
             </p>
@@ -275,10 +275,10 @@ return (
             <span className="text-indigo-500">Unleash</span> your creativity with personalized prompts
             </h3>
             <p className="text-2xl font-light flex-wrap">
-              Whether it's for a blog post or a research paper, you can post a
-              prompt for other's to use. Use template syntax to enhance customization.
+              Whether it&apos;s for a blog post or a research paper, you can post a
+              prompt for other&apos;s to use. Use template syntax to enhance customization.
               Our serverless architecture will take care of the
-              rest. It's really that easy.
+              rest. It&apos;s really that easy.
             </p>
             <Button className="w-36">
             <a href="https://devpost.com/software/querycorner">Learn More</a>

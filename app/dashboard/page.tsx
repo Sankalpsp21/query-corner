@@ -1,16 +1,10 @@
 "use client";
-import { StickySidebar } from "@/components/layout/sticky-sidebar";
 import { api } from "@/convex/_generated/api";
 import { useAction } from "convex/react"; //As opposed to useQuery which doesn't support pagination
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { idResult } from "@/convex/posts";
-import {
-  PersonIcon,
-  BookmarkFilledIcon,
-  CounterClockwiseClockIcon,
-} from "@radix-ui/react-icons";
 import SearchResults from "@/components/SearchResults";
 import CreatePost from "@/components/CreatePost";
 import { z } from "zod";
