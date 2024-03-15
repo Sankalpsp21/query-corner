@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { getCurrentUser } from "./users";
+import { paginationOptsValidator } from "convex/server";
 
 //Adds a user-post save to the table
 export const save = mutation({
@@ -63,4 +64,20 @@ export const unsave = mutation({
       return false;
     }
   },
+});
+
+//Returns a list of the user saved post 
+export const savedPosts = query({
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+      const user = await getCurrentUser(ctx);
+
+      const docs = await ctx.db
+          .query("userSaves")
+          .filter((q) => q.eq(q.field("userId"), user?._id))
+          .order("desc")
+          .paginate(args.paginationOpts);
+          
+      return docs;
+  }
 });

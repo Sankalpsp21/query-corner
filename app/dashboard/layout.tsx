@@ -1,3 +1,5 @@
+"use client";
+
 import { StickySidebar } from "@/components/layout/sticky-sidebar";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,11 +10,18 @@ import {
 } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React from "react";
+import { usePathname } from 'next/navigation'
 
 function SidebarNavButton(props: { href: string; children: React.ReactNode }) {
+  const pathname = usePathname()
+  
   return (
     <Link href={props.href}>
-      <Button variant="outline" style={{ minWidth: "100%" }}>
+      <Button 
+        variant = {pathname === props.href ? "hover" : "outline"}
+        style={{ minWidth: "100%" }}
+
+        >
         <span className="flex justify-between gap-1 items-center">
           {props.children}
         </span>
@@ -22,6 +31,8 @@ function SidebarNavButton(props: { href: string; children: React.ReactNode }) {
 }
 
 export default function Dashboard(props: { children: React.ReactNode }) {
+  const pathname = usePathname()
+
   return (
     <main>
       <div className="grid grid-cols-[240px_minmax(0,1fr)]">

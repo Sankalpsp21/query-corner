@@ -3,6 +3,7 @@ import { useAction } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { Tag } from "@/components/ui/tag-input";
 import { Button } from "@/components/ui/button";
+import { PlusIcon } from "@radix-ui/react-icons";
 import {
   Dialog,
   DialogContent,
@@ -32,8 +33,8 @@ const CreatePost = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="hover" className="mt-5">
-          Create New Prompt +
+        <Button className="mt-5">
+          Create New Prompt <PlusIcon style={{marginLeft: "0.5rem", minWidth: "1rem", minHeight: "1rem"}}/> 
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

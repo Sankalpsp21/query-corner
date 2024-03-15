@@ -79,10 +79,10 @@ export default function Dashboard() {
 
   return (
     <div className="h-full overflow-y-auto m-1 p-4 rounded-md ">
-      <h1 className="text-3xl mb-4">Dashboard</h1>
+      <h1 className="text-3xl mb-4 font-semibold">Dashboard</h1>
       {/* Search Bar */}
       <div className="flex items-start" style={{ minHeight: "7rem" }}>
-        <div className="min-w-3xl max-w-3xl mx-auto pt-3 rounded-2xl px-8 shadow-input bg-primary-foreground border">
+        <div className=" mx-auto pt-3 rounded-2xl px-8 shadow-input bg-primary-foreground border">
           <Form {...form}>
             <form
               onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}

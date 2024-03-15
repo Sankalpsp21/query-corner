@@ -68,7 +68,7 @@ body,
       --muted: 240 3.7% 15.9%;
       --muted-foreground: 240 5% 64.9%;
 
-      --accent: 271, 100%, 5%;
+      --accent: 255, 27%, 27%;
       --accent-foreground: 0 0% 98%;
 
       --destructive: 0 62.8% 30.6%;
@@ -186,4 +186,8 @@ ul li img {
 
 .profile img {
   @apply w-20 h-20 rounded-full border-2 border-white;
+}
+
+.color-grey:hover {
+  color: grey;
 }

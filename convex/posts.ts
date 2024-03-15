@@ -182,6 +182,40 @@ export const fetchResults = query({
   },
 });
 
+
+
+
+export const getSavedPosts = query({
+  args: {
+    postIds: v.array(v.id("posts")),
+  },
+  handler: async (ctx, args) => {
+    const out: SearchResultVector[] = [];
+    for (const postId of args.postIds) {
+      const doc = await ctx.db.get(postId);
+      if (!doc) {
+        continue;
+      }
+      out.push({
+        _id: doc._id,
+        _creationTime: doc._creationTime,
+        _score: null,
+        _authorId: doc.authorId !== undefined ? doc.authorId : null,
+        title: doc.title,
+        description: doc.description,
+        prompt: doc.prompt,
+        likes: doc.likes,
+        platform: doc.platform !== undefined ? doc.platform : null,
+        tags: doc.tags !== undefined ? doc.tags : null,
+      });
+    }
+
+    return out;
+  },
+});
+
+
+
 //Function to delete a post
 export const deletePost = mutation({
   args: {

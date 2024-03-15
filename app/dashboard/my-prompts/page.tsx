@@ -32,7 +32,7 @@ export default function MyPromptsPage() {
 
   return (
     <div className="h-full overflow-y-auto m-1 p-4 rounded-md">
-      <h1 className="text-3xl">My Prompts</h1>
+      <h1 className="text-3xl font-semibold">My Prompts</h1>
       <div className="p-4 grid grid-cols-4 gap-4 overflow-y-auto">
         {posts &&
           posts.map((p) => {
