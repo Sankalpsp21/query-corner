@@ -96,7 +96,8 @@ export const addPosts = action({
   },
   handler: async (ctx, args) => {
     //Generate the embedding
-    const embedding = [0.01];
+    // const embedding = [0.01];
+    const embedding = await embed(args.title + args.description + args.prompt);
 
     //Add the post to the posts table
     await ctx.runMutation(internal.posts.insertRow, {
