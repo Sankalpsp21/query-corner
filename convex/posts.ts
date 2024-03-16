@@ -21,6 +21,7 @@ export const populate = action({
         title: doc.title,
         description: doc.description,
         prompt: doc.prompt,
+        tags: doc.tags ?? undefined,
         likes: 0,
         embedding: embedding,
       });
@@ -73,12 +74,15 @@ export const insertRow = internalMutation({
     //Get the current user and add their id to the post
     const user = await getCurrentUser(ctx);
 
-    if (!user) return null;
+    // if (!user) return null;
 
-    const post = {
-      authorId: user._id,
-      ...args,
-    };
+    // const post = {
+    //   authorId: user._id,
+    //   ...args,
+    // };
+
+    const post = {...args}
+    console.log("Inserting post", post);
 
     await ctx.db.insert("posts", post);
   },
@@ -129,9 +133,10 @@ export type SearchResultVector = {
 export const list = query({
   args: { paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {
+    //Use a filter to order by the number of likes
     const docs = await ctx.db
       .query("posts")
-      .order("desc")
+      .order("asc")
       .paginate(args.paginationOpts);
 
     return docs;

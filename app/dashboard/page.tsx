@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Tag, TagInput } from "@/components/ui/tag-input";
 import { useEffect } from "react";
+import { set } from "date-fns";
 
 const searchFormSchema = z.object({
   query: z.string().min(0).max(300),
@@ -40,6 +41,7 @@ export interface SearchParams {
 export default function Dashboard() {
   const search = useAction(api.search.similarPosts);
 
+  const [searchLoading, setSearchLoading] = useState(false);
   const [tags, setTags] = useState<Tag[]>([]);
   const [queryTags, setQueryTags] = useState<string[] | undefined>();
   const [fetchedIds, setFetchedIds] = useState<idResult[]>([]);
@@ -67,7 +69,7 @@ export default function Dashboard() {
   }, [fetchedIds, queryTags]);
 
   const onSubmit = async (values: z.infer<typeof searchFormSchema>) => {
-    console.log(values);
+    setSearchLoading(true);
 
     const searchTerm = values.query;
     setQueryTags(values.tags?.map((tag) => tag.text));
@@ -128,14 +130,20 @@ export default function Dashboard() {
                 )}
               />
 
-              <Button type="submit">Search</Button>
+              {/* if searchLoading is false, button test says search, else shows loading spinner */}
+              <Button
+                type="submit"
+                disabled={searchLoading}
+              >
+                {searchLoading ? "Loading" : "Search"}
+              </Button>
             </form>
           </Form>
         </div>
         <CreatePost />
       </div>
 
-      <SearchResults searchParams={searchResults} />
+      <SearchResults searchParams={searchResults} setLoading={setSearchLoading}/>
     </div>
   );
 }
