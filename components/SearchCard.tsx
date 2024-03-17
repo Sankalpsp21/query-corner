@@ -45,20 +45,11 @@ const SearchCard = (props: {
     const searchTime = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', day: 'numeric', month: 'short'}); 
 
 
-  const redirectToSearch = () => {
-    window.location.href = '/dashboard';  
+    const redirectToSearch = (query: string) => {
+        window.location.href = `/dashboard/${query}`;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('search-input-form');
-        if (!form) return;
-        const queryInput = form.querySelector('search-input');
-        if (queryInput instanceof HTMLInputElement) {
-            queryInput.value = 'Your string here';
-        } else {
-            console.error('Query input field not found');
-        }
-        });
-        console.log('Redirecting to search');
+        // Log a message for debugging
+        console.log('Redirecting to search:', query);
     };
 
   return (
@@ -67,7 +58,8 @@ const SearchCard = (props: {
         <div className="flex items-center justify-between mb-2">
           <h2
             className="text-xl font-medium line-clamp-1 hover:underline hover:cursor-pointer"
-            onClick={redirectToSearch}
+            // onClick={redirectToSearch}
+            onClick={() => redirectToSearch(props.query.query)}
           >
             {props.query.query}
           </h2>

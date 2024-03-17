@@ -20,6 +20,7 @@ import {
 import { Tag, TagInput } from "@/components/ui/tag-input";
 import { useEffect } from "react";
 import { set } from "date-fns";
+import { se } from "@/lib/utils";
 
 const searchFormSchema = z.object({
   query: z.string().min(0).max(300),
@@ -38,7 +39,17 @@ export interface SearchParams {
   tags?: string[];
 }
 
-export default function Dashboard() {
+export default function Dashboard({ params }: { params: { slug: string } }) {
+
+  // Optional route parameter for search redirection
+  useEffect(() => {
+    if (params.slug) {
+      const decodedSlug = decodeURIComponent(params.slug[0]);
+      const searchInput = document.getElementById("search-input") as HTMLInputElement;
+      searchInput.value = decodedSlug;
+    }
+  }, [params.slug]);
+
   const search = useAction(api.search.similarPosts);
 
   const [searchLoading, setSearchLoading] = useState(false);
