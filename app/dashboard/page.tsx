@@ -89,6 +89,7 @@ export default function Dashboard() {
             <form
               onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
               className="flex items-start mt-2 mb-3 gap-5"
+              id="search-input-form"
             >
               <FormField
                 control={form.control}
@@ -97,6 +98,7 @@ export default function Dashboard() {
                   <FormItem style={{ flexGrow: 3 }}>
                     <FormControl>
                       <Input
+                        id="search-input"
                         placeholder="Search for a prompt"
                         {...field}
                         className="hover:border-primary hover:cursor-pointer"

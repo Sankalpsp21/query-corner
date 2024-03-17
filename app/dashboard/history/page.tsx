@@ -15,17 +15,11 @@ export default function SearchHistoryPage() {
       <h1 className="text-3xl font-semibold">Search History</h1>
       <div className="p-4 grid grid-cols-1 gap-4 overflow-y-auto">
         {searches &&
-          searches.map((p) => {
+          searches.reverse().map((p) => {
             return (
               <SearchCard
               query={p}
                 key={p._id}
-                // prompt={p}
-                // likeCallback={clickedLike}
-                // unlikeCallback={clickedUnlike}
-                // saveCallback={clickedSave}
-                // unsaveCallback={clickedUnsave}
-                // copyCallback={copyText}
               ></SearchCard>
             );
           })}

@@ -1,24 +1,32 @@
 "use node";
 
-import { action } from "./_generated/server";
+import { action, internalMutation } from "./_generated/server";
+import { internal } from "./_generated/api";
 import { v } from "convex/values";
-import { save } from "./userSearches";
-
+import { addSearch } from "./userSearches";
+import {
+  query,
+  mutation,
+} from "./_generated/server";
+import { getCurrentUser } from "./users";
+import { Doc, Id } from "./_generated/dataModel";
+export interface idSearchResult {
+    _id: Id<"userSearches">;
+    _score: number;
+}
+  
 
 //Takes a query and optional tags and returns a list of posts that are similar to the query
 export const similarPosts = action({
-  args: { query: v.string()},
-  handler: async (ctx, args) => {
-    const embedding = [0.01];
+  args: { query: v.string() },
 
+  handler: async (ctx, args) => {
+    
+    console.log("USING TEST EMBEDDING - CHANGE TO OPENAI")
+    const embedding = [0.01];
     console.log(embedding)
 
-    console.log("Searching for posts similar to", args.query);
-    const search = args.query
-
-    // const test = await save(ctx, {search});
-
-    
+    await ctx.runMutation(internal.userSearches.addSearch, { query: args.query });
 
     let results = await ctx.vectorSearch("posts", "by_embedding", {
       vector: embedding,

@@ -41,10 +41,25 @@ const SearchCard = (props: {
     props.query.userId ? { id: props.query.userId } : "skip"
   );
 
-  const creationTimeInSeconds = props.query._creationTime;
-  const creationTimeInMilliseconds = creationTimeInSeconds * 1000;
-  const creationDate = new Date(creationTimeInMilliseconds);
-  const searchTime = creationDate.toLocaleString();
+    const date = new Date(props.query._creationTime);
+    const searchTime = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', day: 'numeric', month: 'short'}); 
+
+
+  const redirectToSearch = () => {
+    window.location.href = '/dashboard';  
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('search-input-form');
+        if (!form) return;
+        const queryInput = form.querySelector('search-input');
+        if (queryInput instanceof HTMLInputElement) {
+            queryInput.value = 'Your string here';
+        } else {
+            console.error('Query input field not found');
+        }
+        });
+        console.log('Redirecting to search');
+    };
 
   return (
     <>
@@ -52,7 +67,7 @@ const SearchCard = (props: {
         <div className="flex items-center justify-between mb-2">
           <h2
             className="text-xl font-medium line-clamp-1 hover:underline hover:cursor-pointer"
-            // onClick={toggleDrawer}
+            onClick={redirectToSearch}
           >
             {props.query.query}
           </h2>
@@ -61,7 +76,7 @@ const SearchCard = (props: {
         <div className="flex justify-between items-center mt-2">
           
           <p className="font-normal text-sm">
-            Time: {searchTime}
+            {searchTime}
           </p>
         </div>
       </Card>

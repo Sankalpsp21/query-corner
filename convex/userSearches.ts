@@ -2,7 +2,9 @@ import { v } from "convex/values";
 import {
   query,
   mutation,
+  action
 } from "./_generated/server";
+import { internalMutation } from "./_generated/server";
 import { getCurrentUser } from "./users";
 import { Doc, Id } from "./_generated/dataModel";
 export interface idSearchResult {
@@ -10,14 +12,33 @@ export interface idSearchResult {
     _score: number;
 }
 
+export const addSearch = internalMutation({
+    
+    args: { query: v.string() },
+    handler: async (ctx, args) => {
+
+        const user = await getCurrentUser(ctx);
+        if (!user) return null;
+
+        const newTaskId = await ctx.db.insert("userSearches", {
+            userId: user._id,
+            query: args.query,
+        });
+
+        return newTaskId;
+    },
+  });
+
 
 //Adds a user-search save to the table
 export const save = mutation({
     args: { 
         query: v.string(),
+        userId: v.id("users"),
     },
     handler: async (ctx, args) => {
       const user = await getCurrentUser(ctx);
+    // const user = args.userId
 
       if (!user) return null;
       const newTaskId = await ctx.db.insert("userSearches", { userId: user._id, query: args.query });
