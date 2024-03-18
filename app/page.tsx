@@ -23,7 +23,7 @@ const isInView4 = useInView(ref3, { once: true });
 const theme = useTheme();
 
 
-//Landing animation inspiration from https://github.com/Nyumat/TalkToBeavs/blob/deploy/frontend/src/components/landing/Hero.jsx
+//Landing inspiration from https://github.com/Nyumat/TalkToBeavs/blob/deploy/frontend/src/components/landing/Hero.jsx
 
 const landingText = {
   hidden: {

@@ -2,7 +2,8 @@ import { v } from "convex/values";
 import {
   query,
   mutation,
-  action
+  action,
+  internalQuery
 } from "./_generated/server";
 import { internalMutation } from "./_generated/server";
 import { getCurrentUser } from "./users";
@@ -63,7 +64,6 @@ export const save = mutation({
   
       const searches = await ctx.db
         .query("userSearches")
-        // .withIndex("by_creation_time", (q) => q.eq("_creationTime", user._id))
         .filter((q) => q.eq(q.field("userId"), user?._id))
         .collect();
   
@@ -74,5 +74,13 @@ export const save = mutation({
           query: p.query ?? null,
         };
       });
+    },
+  });
+
+  export const getQueryById = query({
+    args: { id: v.id("userSearches") },
+    handler: async (ctx, args) => {
+      const search = await ctx.db.get(args.id);
+      return search?.query;
     },
   });

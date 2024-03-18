@@ -2,9 +2,7 @@
 
 import SearchCard from "@/components/SearchCard";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import { copyText } from "@/lib/utils";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 
 export default function SearchHistoryPage() {
 

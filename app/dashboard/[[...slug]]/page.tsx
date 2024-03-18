@@ -19,8 +19,6 @@ import {
 } from "@/components/ui/form";
 import { Tag, TagInput } from "@/components/ui/tag-input";
 import { useEffect } from "react";
-import { set } from "date-fns";
-import { se } from "@/lib/utils";
 
 const searchFormSchema = z.object({
   query: z.string().min(0).max(300),
@@ -41,12 +39,17 @@ export interface SearchParams {
 
 export default function Dashboard({ params }: { params: { slug: string } }) {
 
+  const forceSearch = async (searchTerm: string) => {
+    setSearchLoading(true);
+    const res = await search({ query: searchTerm });
+    setFetchedIds(res);
+  }
+    
   // Optional route parameter for search redirection
   useEffect(() => {
     if (params.slug) {
       const decodedSlug = decodeURIComponent(params.slug[0]);
-      const searchInput = document.getElementById("search-input") as HTMLInputElement;
-      searchInput.value = decodedSlug;
+      forceSearch(decodedSlug);
     }
   }, [params.slug]);
 
@@ -76,7 +79,7 @@ export default function Dashboard({ params }: { params: { slug: string } }) {
       searchParams.tags = queryTags;
     }
     setSearchResults(searchParams);
-    console.log("Created search Params", searchParams);
+    // console.log("Created search Params", searchParams);
   }, [fetchedIds, queryTags]);
 
   const onSubmit = async (values: z.infer<typeof searchFormSchema>) => {
@@ -150,6 +153,18 @@ export default function Dashboard({ params }: { params: { slug: string } }) {
               >
                 {searchLoading ? "Loading" : "Search"}
               </Button>
+              {fetchedIds && fetchedIds.length > 0 && (
+                <Button
+                  onClick={() => {
+                    form.reset()
+                    setFetchedIds([]);
+                    setTags([]);
+                    setQueryTags(undefined);
+                  }}
+                >
+                  Reset
+                </Button>
+              )}
             </form>
           </Form>
         </div>

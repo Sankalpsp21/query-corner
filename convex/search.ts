@@ -1,15 +1,11 @@
 "use node";
 
-import { action, internalMutation } from "./_generated/server";
+import { action } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { v } from "convex/values";
-import { addSearch } from "./userSearches";
-import {
-  query,
-  mutation,
-} from "./_generated/server";
-import { getCurrentUser } from "./users";
-import { Doc, Id } from "./_generated/dataModel";
+
+import { Id } from "./_generated/dataModel";
+import { embed } from "./posts";
 export interface idSearchResult {
     _id: Id<"userSearches">;
     _score: number;
@@ -21,10 +17,12 @@ export const similarPosts = action({
   args: { query: v.string() },
 
   handler: async (ctx, args) => {
+    //If the query string "", return an empty array
+    if (args.query === "") {
+      return [];
+    }
     
-    console.log("USING TEST EMBEDDING - CHANGE TO OPENAI")
-    const embedding = [0.01];
-    console.log(embedding)
+    const embedding = await embed(args.query);
 
     await ctx.runMutation(internal.userSearches.addSearch, { query: args.query });
 
