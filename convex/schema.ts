@@ -42,4 +42,9 @@ export default defineSchema({
       postId: v.id("posts"),
     })
       .index("by_user_post", ["userId", "postId"]),
+    userSearches: defineTable({
+      userId: v.id("users"),
+      query: v.string(),
+    })
+      .index("by_user_query", ["userId", "query"]),
 });

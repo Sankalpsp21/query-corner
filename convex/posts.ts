@@ -53,9 +53,9 @@ export async function embed(text: string): Promise<number[]> {
   }
   const json = await resp.json();
   const vector = json["data"][0]["embedding"];
-  console.log(
-    `Computed embedding of "${text}" post: ${vector.length} dimensions`
-  );
+  // console.log(
+  //   `Computed embedding of "${text}" post: ${vector.length} dimensions`
+  // );
   return vector;
 }
 
@@ -181,7 +181,7 @@ export const fetchResults = query({
         )
       );
     }
-    console.log("Fetching results!", out);
+    // console.log("Fetching results!", out);
 
     //else return everything
     return out;

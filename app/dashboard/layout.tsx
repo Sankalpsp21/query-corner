@@ -31,8 +31,6 @@ function SidebarNavButton(props: { href: string; children: React.ReactNode }) {
 }
 
 export default function Dashboard(props: { children: React.ReactNode }) {
-  const pathname = usePathname()
-
   return (
     <div className="grid grid-cols-[240px_minmax(0,1fr)]">
       <StickySidebar className="top-[calc(4.75rem+1px)] h-[calc(100vh-(5rem+2px))] p-3 rounded-md bg-primary-foreground border">

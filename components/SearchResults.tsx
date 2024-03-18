@@ -5,7 +5,7 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, usePaginatedQuery, useQuery } from "convex/react"; //As opposed to useQuery which doesn't support pagination
 import { Id } from "@/convex/_generated/dataModel";
 import SkeletonGrid from "@/components/SkeletonGrid";
-import { SearchParams } from "@/app/dashboard/page";
+import { SearchParams } from "@/app/dashboard/[[...slug]]/page";
 import { copyText } from "@/lib/utils";
 import { Dispatch, SetStateAction } from 'react';
 import { useEffect, useRef } from "react";

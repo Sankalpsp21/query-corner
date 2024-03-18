@@ -9,7 +9,7 @@ import SkeletonGrid from "@/components/SkeletonGrid";
 
 export default function SavedPromptsPage() {
   const [savedIds, setSavedIds] = useState<Id<"posts">[]>([])
-  const { results: savedList, status: status1, loadMore: loadMore1 } = usePaginatedQuery(
+  const { results: savedList } = usePaginatedQuery(
     api.userSaves.savedPosts,
     {},
     { initialNumItems: 12 }

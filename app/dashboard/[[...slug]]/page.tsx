@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/form";
 import { Tag, TagInput } from "@/components/ui/tag-input";
 import { useEffect } from "react";
-import { set } from "date-fns";
 
 const searchFormSchema = z.object({
   query: z.string().min(0).max(300),
@@ -38,7 +37,7 @@ export interface SearchParams {
   tags?: string[];
 }
 
-export default function Dashboard() {
+export default function Dashboard({ params }: { params: { slug: string } }) {
   const search = useAction(api.search.similarPosts);
 
   const [searchLoading, setSearchLoading] = useState(false);
@@ -48,6 +47,25 @@ export default function Dashboard() {
   const [searchResults, setSearchResults] = useState<SearchParams>({
     results: [],
   });
+    
+  // Optional route parameter for search redirection
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (params.slug && params.slug.length > 0) { // Check if params.slug exists and has a length greater than 0
+          const searchTerm = decodeURIComponent(params.slug[0]);
+          setSearchLoading(true);
+          const res = await search({ query: searchTerm });
+          setFetchedIds(res);
+        }
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    };
+
+    fetchData();
+  }, [params.slug]);
+
 
   const form = useForm<z.infer<typeof searchFormSchema>>({
     resolver: zodResolver(searchFormSchema),
@@ -65,7 +83,7 @@ export default function Dashboard() {
       searchParams.tags = queryTags;
     }
     setSearchResults(searchParams);
-    console.log("Created search Params", searchParams);
+    // console.log("Created search Params", searchParams);
   }, [fetchedIds, queryTags]);
 
   const onSubmit = async (values: z.infer<typeof searchFormSchema>) => {
@@ -89,6 +107,7 @@ export default function Dashboard() {
             <form
               onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}
               className="flex items-start mt-2 mb-3 gap-5"
+              id="search-input-form"
             >
               <FormField
                 control={form.control}
@@ -97,6 +116,7 @@ export default function Dashboard() {
                   <FormItem style={{ flexGrow: 3 }}>
                     <FormControl>
                       <Input
+                        id="search-input"
                         placeholder="Search for a prompt"
                         {...field}
                         className="hover:border-primary hover:cursor-pointer"
@@ -137,6 +157,18 @@ export default function Dashboard() {
               >
                 {searchLoading ? "Loading" : "Search"}
               </Button>
+              {fetchedIds && fetchedIds.length > 0 && (
+                <Button
+                  onClick={() => {
+                    form.reset()
+                    setFetchedIds([]);
+                    setTags([]);
+                    setQueryTags(undefined);
+                  }}
+                >
+                  Reset
+                </Button>
+              )}
             </form>
           </Form>
         </div>
