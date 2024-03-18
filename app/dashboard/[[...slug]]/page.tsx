@@ -38,21 +38,6 @@ export interface SearchParams {
 }
 
 export default function Dashboard({ params }: { params: { slug: string } }) {
-
-  const forceSearch = async (searchTerm: string) => {
-    setSearchLoading(true);
-    const res = await search({ query: searchTerm });
-    setFetchedIds(res);
-  }
-    
-  // Optional route parameter for search redirection
-  useEffect(() => {
-    if (params.slug) {
-      const decodedSlug = decodeURIComponent(params.slug[0]);
-      forceSearch(decodedSlug);
-    }
-  }, [params.slug]);
-
   const search = useAction(api.search.similarPosts);
 
   const [searchLoading, setSearchLoading] = useState(false);
@@ -62,6 +47,25 @@ export default function Dashboard({ params }: { params: { slug: string } }) {
   const [searchResults, setSearchResults] = useState<SearchParams>({
     results: [],
   });
+    
+  // Optional route parameter for search redirection
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (params.slug && params.slug.length > 0) { // Check if params.slug exists and has a length greater than 0
+          const searchTerm = decodeURIComponent(params.slug[0]);
+          setSearchLoading(true);
+          const res = await search({ query: searchTerm });
+          setFetchedIds(res);
+        }
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    };
+
+    fetchData();
+  }, [params.slug]);
+
 
   const form = useForm<z.infer<typeof searchFormSchema>>({
     resolver: zodResolver(searchFormSchema),
