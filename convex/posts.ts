@@ -74,15 +74,12 @@ export const insertRow = internalMutation({
     //Get the current user and add their id to the post
     const user = await getCurrentUser(ctx);
 
-    // if (!user) return null;
+    if (!user) return null;
 
-    // const post = {
-    //   authorId: user._id,
-    //   ...args,
-    // };
-
-    const post = {...args}
-    console.log("Inserting post", post);
+    const post = {
+      authorId: user._id,
+      ...args,
+    };
 
     await ctx.db.insert("posts", post);
   },
