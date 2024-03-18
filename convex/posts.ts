@@ -136,7 +136,8 @@ export const list = query({
     //Use a filter to order by the number of likes
     const docs = await ctx.db
       .query("posts")
-      .order("asc")
+      .withIndex("likes")
+      .order("desc")
       .paginate(args.paginationOpts);
 
     return docs;

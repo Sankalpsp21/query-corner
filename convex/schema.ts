@@ -25,6 +25,7 @@ export default defineSchema({
     embedding: v.array(v.float64()),  
   })
     .index("authorId", ["authorId"])
+    .index("likes", ["likes"])
     .vectorIndex("by_embedding", {
       vectorField: "embedding",
       dimensions: 1536,
