@@ -1,7 +1,8 @@
 # QueryCorner
 
 ## Inspiration
-The inspiration for our project, QueryCorner, comes from our experience as students and software developers getting low-quality answers from ChatGPT. Typing out a detailed prompt can be hard and annoying but is often necessary for complex questions or questions requiring a lot of context. We saw an opportunity to create a tool that would empower people to accelerate their research and workflow.
+The inspiration for our project, QueryCorner, comes from our experience as students and software developers getting low-quality answers from ChatGPT. Typing out a detailed prompt can be hard and annoying but is often necessary for complex questions or questions requiring a lot of context. We saw an opportunity to create a tool that would empower people to accelerate their research and workflow. Try it out at [QueryCorner](https://query-corner-one.vercel.app/).
+
 
 ## What it Does
  Query Corner is a generative AI prompt-sharing / social platform where people can share their prompts and prompt templates. Users can attach tags to their prompts (React, Finance, Health, etc) to help with filtering, and we use embeddings and vector search to implement a robust semantic search. Additional features include search history, saved prompts, likes, and as a stretch goal, comment sections. With QueryCorner, the perfect prompt is always one search away.
